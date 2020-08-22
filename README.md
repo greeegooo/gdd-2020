@@ -11,3 +11,7 @@ Repo para entrega de tps
 - Campus: https://www.campusvirtual.frba.utn.edu.ar/especialidad/course/view.php?id=3674
 - Grupo: https://groups.google.com/g/gestiondedatos
 - Sitio: https://sites.google.com/site/gestiondedatosutn/home
+- Modelo Relaciónal: https://docs.google.com/document/d/1uF3yoYIFmLxTH5ZJoT9I3cc5TW9b-H3BqZJbLudKBcA/edit#heading=h.aa3gqw2dds4m
+- Trabajo Práctico: https://sites.google.com/site/gestiondedatosutn/trabajo-practico
+- Mail Profesor: moscuzzama@yahoo.com
+- Mail de materia y profesor: mmoscuzzaguidoni@frba.utn.edu.ar
