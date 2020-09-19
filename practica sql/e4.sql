@@ -1,12 +1,13 @@
-select 
+select
 	prod_codigo as Codigo,
 	prod_detalle as Detalle,
-	comp_cantidad as Cantidad
-from Producto as producto
+	SUM(ISNULL(comp_cantidad, 0)) as Cantidad
+from Producto
 left join Composicion on prod_codigo = comp_producto
 where (
-	select 
-		AVG(stoc_cantidad) 
-		from STOCK 
-		where stoc_producto = comp_componente
-		group by stoc_producto) > 100
+	select
+	AVG(stoc_cantidad)
+	from STOCK
+	where stoc_producto = prod_codigo
+	group by stoc_producto) > 100
+group by prod_codigo, prod_detalle
