@@ -24,4 +24,4 @@ select
 		group by stoc_producto
 	), 0) as 'Stock Total'
 from Producto as p
-order by Codigo asc;
+order by Nombre asc;
