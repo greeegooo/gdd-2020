@@ -2,7 +2,7 @@ select
 	p.prod_rubro as [Codigo Rubro],
 	r.rubr_detalle as [Detalle Rubro],
 	COUNT(1) AS [Cantidad Articulos],
-	MAX(suma_stock.[Stock Cantidad]) as [Stock Total]
+	MAX(suma_stock.[Stock Cantidad]) as [Stock Total] -- Siempre viene 1 valor, pero no podia hacerlo de otra forma porque el group causa que el count devuelva 1
 from Producto as p
 	join Rubro as r on r.rubr_id = p.prod_rubro
 	join (
