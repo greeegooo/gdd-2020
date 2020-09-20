@@ -10,4 +10,18 @@ where (
 	from STOCK
 	where stoc_producto = prod_codigo
 	group by stoc_producto) > 100
-group by prod_codigo, prod_detalle
+group by prod_codigo, prod_detalle;
+		   
+-- 2da solución
+select 
+	p.prod_codigo as Codigo,
+	p.prod_detalle as Nombre,
+	isnull((
+		select 
+			SUM(stoc_cantidad) as Cantidad
+		FROM STOCK 
+		where stoc_producto = p.prod_codigo
+		group by stoc_producto
+	), 0) as 'Stock Total'
+from Producto as p
+order by Codigo asc;
