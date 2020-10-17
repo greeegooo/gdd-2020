@@ -268,54 +268,51 @@ INSERT INTO [LOS_CUATRO_FANTASTICOS].[Fabricante] (Nombre)
 	ORDER BY [FABRICANTE_NOMBRE] 
 GO
 
--- INserto datos de Modelo
+-- Inserto datos de Modelo
 INSERT INTO [LOS_CUATRO_FANTASTICOS].[Modelo] (Codigo, Nombre, Potencia, FabricanteId)
-SELECT 
-	[MODELO_CODIGO],
-	[MODELO_NOMBRE],
-	[MODELO_POTENCIA],
-	fabricante.Id
-FROM gd_esquema.Maestra as maestra
-JOIN [LOS_CUATRO_FANTASTICOS].[Fabricante] as fabricante on maestra.FABRICANTE_NOMBRE = fabricante.Nombre
-GROUP BY 
-	[MODELO_CODIGO],
-	[MODELO_NOMBRE],
-	[MODELO_POTENCIA],
-	fabricante.Id
+	SELECT 
+		[MODELO_CODIGO],
+		[MODELO_NOMBRE],
+		[MODELO_POTENCIA],
+		fabricante.Id
+	FROM gd_esquema.Maestra as maestra
+	JOIN [LOS_CUATRO_FANTASTICOS].[Fabricante] as fabricante on maestra.FABRICANTE_NOMBRE = fabricante.Nombre
+	GROUP BY 
+		[MODELO_CODIGO],
+		[MODELO_NOMBRE],
+		[MODELO_POTENCIA],
+		fabricante.Id
+GO
 
 ---Inserto datos de TipoAuto
 INSERT INTO [LOS_CUATRO_FANTASTICOS].[TipoAuto]([Codigo] ,[Descripcion])
-
-select distinct TIPO_AUTO_CODIGO, TIPO_AUTO_DESC
-FROM [GD2C2020].[gd_esquema].[Maestra]
-where TIPO_AUTO_CODIGO is not null and TIPO_AUTO_DESC is not null
+	SELECT DISTINCT TIPO_AUTO_CODIGO, TIPO_AUTO_DESC
+	FROM [GD2C2020].[gd_esquema].[Maestra]
+	WHERE TIPO_AUTO_CODIGO is not null and TIPO_AUTO_DESC is not null
 
 GO
 
 ---Inserto datos de Tipo Transmision
 INSERT INTO [LOS_CUATRO_FANTASTICOS].[TipoAutoparte]([Codigo] ,[Descripcion], [Tipo])
-
-SELECT distinct [TIPO_TRANSMISION_CODIGO], [TIPO_TRANSMISION_DESC], 'Transmision'
-FROM [GD2C2020].[gd_esquema].[Maestra]
-WHERE [TIPO_TRANSMISION_CODIGO] IS NOT NULL AND [TIPO_TRANSMISION_DESC] IS NOT NULL
+	SELECT DISTINCT [TIPO_TRANSMISION_CODIGO], [TIPO_TRANSMISION_DESC], 'Transmision'
+	FROM [GD2C2020].[gd_esquema].[Maestra]
+	WHERE [TIPO_TRANSMISION_CODIGO] IS NOT NULL AND [TIPO_TRANSMISION_DESC] IS NOT NULL
 
 GO
 
 ---Inserto datos de Tipo Caja
 INSERT INTO [LOS_CUATRO_FANTASTICOS].[TipoAutoparte]([Codigo] ,[Descripcion], [Tipo])
-
-SELECT distinct TIPO_CAJA_CODIGO, TIPO_CAJA_DESC, 'Caja'
-FROM [GD2C2020].[gd_esquema].[Maestra]
-WHERE TIPO_CAJA_CODIGO IS NOT NULL AND TIPO_CAJA_DESC IS NOT NULL
+	SELECT DISTINCT TIPO_CAJA_CODIGO, TIPO_CAJA_DESC, 'Caja'
+	FROM [GD2C2020].[gd_esquema].[Maestra]
+	WHERE TIPO_CAJA_CODIGO IS NOT NULL AND TIPO_CAJA_DESC IS NOT NULL
 
 GO
 
 ---Inserto datos de Tipo Motor
 INSERT INTO [LOS_CUATRO_FANTASTICOS].[TipoAutoparte]([Codigo] ,[Descripcion], [Tipo])
-
- SELECT distinct TIPO_MOTOR_CODIGO, NULL, 'Motor' 
- FROM [GD2C2020].[gd_esquema].[Maestra]
- WHERE TIPO_MOTOR_CODIGO IS NOT NULL
+	SELECT DISTINCT TIPO_MOTOR_CODIGO, NULL, 'Motor' 
+	FROM [GD2C2020].[gd_esquema].[Maestra]
+	WHERE TIPO_MOTOR_CODIGO IS NOT NULL
 
 GO
 
