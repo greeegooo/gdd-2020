@@ -245,3 +245,19 @@ GO
 --                                            FIN INDICES --
 ------------------------------------------------------------
 
+------------------------------------------------------------
+--                                                  DATOS --
+------------------------------------------------------------
+
+-- Inserto datos de Fabricante
+INSERT INTO [LOS_CUATRO_FANTASTICOS].[Fabricante] (Nombre)
+	SELECT 
+		[FABRICANTE_NOMBRE]
+	FROM gd_esquema.Maestra 
+	GROUP BY [FABRICANTE_NOMBRE]
+	ORDER BY [FABRICANTE_NOMBRE] 
+GO
+
+------------------------------------------------------------
+--                                              FIN DATOS --
+------------------------------------------------------------
