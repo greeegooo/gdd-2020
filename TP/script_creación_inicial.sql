@@ -309,6 +309,25 @@ INSERT INTO [LOS_CUATRO_FANTASTICOS].[TipoAutoparte]([Codigo] ,[Descripcion], [T
 
 GO
 
+
+---Inserto datos de Cliente
+INSERT INTO [LOS_CUATRO_FANTASTICOS].[Cliente]
+           ([Nombre]
+           ,[Apellido]
+           ,[Direccion]
+           ,[Dni]
+           ,[Fecha_Nacimiento]
+           ,[Mail])
+
+ SELECT CLIENTE_NOMBRE, CLIENTE_APELLIDO,CLIENTE_DIRECCION, 
+ CLIENTE_DNI, CLIENTE_FECHA_NAC, CLIENTE_MAIL 
+ FROM [GD2C2020].[gd_esquema].[Maestra]
+ WHERE CLIENTE_DNI IS NOT NULL AND CLIENTE_FECHA_NAC IS NOT NULL
+ AND CLIENTE_MAIL IS NOT NULL AND  CLIENTE_NOMBRE IS NOT NULL
+ AND CLIENTE_APELLIDO IS NOT NULL AND CLIENTE_DIRECCION IS NOT NULL
+
+GO
+
 ------------------------------------------------------------
 --                                              FIN DATOS --
 ------------------------------------------------------------
