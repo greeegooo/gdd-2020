@@ -5,7 +5,7 @@ GO
 --                                                ESQUEMA --
 ------------------------------------------------------------
 
--- Creaci髇 de esquema 
+-- Creaci贸n de esquema 
 CREATE SCHEMA [LOS_CUATRO_FANTASTICOS]
 GO
 
@@ -17,7 +17,7 @@ GO
 --                                                 TABLAS --
 ------------------------------------------------------------
 
--- Creaci髇 tabla Cliente
+-- Creaci贸n tabla Cliente
 CREATE TABLE [LOS_CUATRO_FANTASTICOS].[Cliente] (
 	Id INT PRIMARY KEY IDENTITY(1,1),
 	Nombre NVARCHAR(255) NULL,
@@ -29,7 +29,7 @@ CREATE TABLE [LOS_CUATRO_FANTASTICOS].[Cliente] (
 )
 GO
 
--- Creaci髇 tabla Sucursal
+-- Creaci贸n tabla Sucursal
 CREATE TABLE [LOS_CUATRO_FANTASTICOS].[Sucursal] (
 	Id INT PRIMARY KEY IDENTITY(1,1),
 	Direccion NVARCHAR(255) NULL,
@@ -39,7 +39,7 @@ CREATE TABLE [LOS_CUATRO_FANTASTICOS].[Sucursal] (
 )
 GO
 
--- Creaci髇 tabla Compra
+-- Creaci贸n tabla Compra
 CREATE TABLE [LOS_CUATRO_FANTASTICOS].[Compra] (
 	Numero DECIMAL(18,0) PRIMARY KEY IDENTITY(1,1),
 	Fecha DATETIME2(3) NOT NULL,
@@ -49,7 +49,7 @@ CREATE TABLE [LOS_CUATRO_FANTASTICOS].[Compra] (
 ) 
 GO
 
--- Creaci髇 tabla FacturaCliente
+-- Creaci贸n tabla FacturaCliente
 CREATE TABLE [LOS_CUATRO_FANTASTICOS].[FacturaCliente] (
 	Id INT PRIMARY KEY IDENTITY(1,1),
 	Nombre NVARCHAR(255) NULL,
@@ -61,7 +61,7 @@ CREATE TABLE [LOS_CUATRO_FANTASTICOS].[FacturaCliente] (
 )
 GO
 
--- Creaci髇 tabla FacturaSucursal
+-- Creaci贸n tabla FacturaSucursal
 CREATE TABLE [LOS_CUATRO_FANTASTICOS].[FacturaSucursal] (
 	Id INT PRIMARY KEY IDENTITY(1,1),
 	Direccion NVARCHAR(255) NULL,
@@ -71,7 +71,7 @@ CREATE TABLE [LOS_CUATRO_FANTASTICOS].[FacturaSucursal] (
 )
 GO
 
--- Creaci髇 tabla Factura
+-- Creaci贸n tabla Factura
 CREATE TABLE [LOS_CUATRO_FANTASTICOS].[Factura] (
 	Numero DECIMAL(18,0) PRIMARY KEY IDENTITY(1,1),
 	Fecha DATETIME2(3) NOT NULL,
@@ -83,7 +83,7 @@ CREATE TABLE [LOS_CUATRO_FANTASTICOS].[Factura] (
 )
 GO
 
---Creaci髇 tabla Auto
+--Creaci贸n tabla Auto
 CREATE TABLE [LOS_CUATRO_FANTASTICOS].[Auto] (
 	Id INT PRIMARY KEY,
 	Chasis NVARCHAR(50) NULL,
@@ -96,18 +96,16 @@ CREATE TABLE [LOS_CUATRO_FANTASTICOS].[Auto] (
 )
 GO
 
---Creaci髇 tabla Autoparte
+--Creaci贸n tabla Autoparte
 CREATE TABLE [LOS_CUATRO_FANTASTICOS].[Autoparte] (
 	Codigo DECIMAL(18,0) PRIMARY KEY,
 	Descripcion NVARCHAR(255) NULL,
 	ModeloId DECIMAL(18,0) NOT NULL,
-	Categoria DECIMAL(18,0) NOT NULL,
-	TipoAutoparteCodigo DECIMAL(18,0) NOT NULL,
-	TipoAutoparte NVARCHAR(11) NOT NULL,
+	Categoria DECIMAL(18,0)
 )
 GO
 
--- Creaci髇 tabla CompraAuto
+-- Creaci贸n tabla CompraAuto
 CREATE TABLE [LOS_CUATRO_FANTASTICOS].[CompraAuto] (
 	CompraNumero DECIMAL(18,0) REFERENCES [LOS_CUATRO_FANTASTICOS].[Compra],
 	AutoId INT REFERENCES [LOS_CUATRO_FANTASTICOS].[Auto],
@@ -116,7 +114,7 @@ CREATE TABLE [LOS_CUATRO_FANTASTICOS].[CompraAuto] (
 )
 GO
 
--- Creaci髇 tabla CompraAutoparte
+-- Creaci贸n tabla CompraAutoparte
 CREATE TABLE [LOS_CUATRO_FANTASTICOS].[CompraAutoparte] (
 	CompraNumero DECIMAL(18,0) REFERENCES [LOS_CUATRO_FANTASTICOS].[Compra],
 	AutoparteId DECIMAL(18,0) REFERENCES [LOS_CUATRO_FANTASTICOS].[Autoparte],
@@ -126,14 +124,14 @@ CREATE TABLE [LOS_CUATRO_FANTASTICOS].[CompraAutoparte] (
 )
 GO
 
---Creaci髇 tabla TipoAuto
+--Creaci贸n tabla TipoAuto
 CREATE TABLE [LOS_CUATRO_FANTASTICOS].[TipoAuto] (
 	Codigo DECIMAL(18,0) PRIMARY KEY,
 	Descripcion NVARCHAR(255) NULL,
 )
 GO
 
---Creaci髇 tabla TipoAutoparte
+--Creaci贸n tabla TipoAutoparte
 CREATE TABLE [LOS_CUATRO_FANTASTICOS].[TipoAutoparte] (
 	Codigo DECIMAL(18,0) NOT NULL,
 	Descripcion NVARCHAR(255)  NULL,
@@ -142,21 +140,21 @@ CREATE TABLE [LOS_CUATRO_FANTASTICOS].[TipoAutoparte] (
 )
 GO
 
---Creaci髇 tabla CategoriaAutoparte
+--Creaci贸n tabla CategoriaAutoparte
 CREATE TABLE [LOS_CUATRO_FANTASTICOS].[CategoriaAutoparte] (
 	Codigo DECIMAL(18,0) PRIMARY KEY,
 	Descripcion NVARCHAR(255)  NULL,
 )
 GO
 
---Creaci髇 tabla Fabricante
+--Creaci贸n tabla Fabricante
 CREATE TABLE [LOS_CUATRO_FANTASTICOS].[Fabricante] (
 	Id INT PRIMARY KEY IDENTITY(1,1),
 	Nombre NVARCHAR(255) NULL,
 )
 GO
 
---Creaci髇 tabla Modelo
+--Creaci贸n tabla Modelo
 CREATE TABLE [LOS_CUATRO_FANTASTICOS].[Modelo] (
 	Codigo DECIMAL(18,0) PRIMARY KEY,
 	Nombre  NVARCHAR(50) NULL,
@@ -165,7 +163,7 @@ CREATE TABLE [LOS_CUATRO_FANTASTICOS].[Modelo] (
 )
 GO
 
---Creaci髇 tabla FacturaAuto
+--Creaci贸n tabla FacturaAuto
 CREATE TABLE [LOS_CUATRO_FANTASTICOS].[FacturaAuto] (
 	FacturaNumero DECIMAL(18,0) REFERENCES [LOS_CUATRO_FANTASTICOS].[Factura],
 	AutoId  INT REFERENCES [LOS_CUATRO_FANTASTICOS].[Auto],
@@ -174,7 +172,7 @@ CREATE TABLE [LOS_CUATRO_FANTASTICOS].[FacturaAuto] (
 )
 GO
 
---Creaci髇 tabla FacturaAutoparte
+--Creaci贸n tabla FacturaAutoparte
 CREATE TABLE [LOS_CUATRO_FANTASTICOS].[FacturaAutoparte] (
 	FacturaNumero DECIMAL(18,0) REFERENCES [LOS_CUATRO_FANTASTICOS].[Factura],
 	AutoparteId  DECIMAL(18,0) REFERENCES [LOS_CUATRO_FANTASTICOS].[Autoparte],
@@ -184,37 +182,31 @@ CREATE TABLE [LOS_CUATRO_FANTASTICOS].[FacturaAutoparte] (
 )
 GO
 
---Creaci髇 clave forania de la tabla Auto con  TIPOAUTO
+--Creaci贸n clave forania de la tabla Auto con  TIPOAUTO
 ALTER TABLE [LOS_CUATRO_FANTASTICOS].[Auto]  
 ADD CONSTRAINT FK_Auto_TipoAuto FOREIGN KEY (TipoAutoCodigo)
 REFERENCES [LOS_CUATRO_FANTASTICOS].[TipoAuto] (Codigo)
 GO
 
---Creaci髇 clave forania de la tabla Auto con Modelo
+--Creaci贸n clave forania de la tabla Auto con Modelo
 ALTER TABLE [LOS_CUATRO_FANTASTICOS].[Auto]
 ADD CONSTRAINT FK_Auto_Modelo FOREIGN KEY (ModeloCodigo)
 REFERENCES [LOS_CUATRO_FANTASTICOS].[Modelo] (Codigo)
 GO
 
---Creaci髇 clave forania de la tabla Modelo con Fabricante
+--Creaci贸n clave forania de la tabla Modelo con Fabricante
 ALTER TABLE [LOS_CUATRO_FANTASTICOS].[Modelo]
 ADD CONSTRAINT FK_Modelo_Fabricante FOREIGN KEY (FabricanteId)
 REFERENCES [LOS_CUATRO_FANTASTICOS].[Fabricante] (Id)
 GO
 
-----Creaci髇 clave forania de la tabla AutoParte con TipoAutoparte
-ALTER TABLE [LOS_CUATRO_FANTASTICOS].[Autoparte]
-ADD CONSTRAINT FK_AutoParte_TipoAutoparteCodigo_TipoAutoparte FOREIGN KEY (TipoAutoparteCodigo, TipoAutoparte)
-REFERENCES [LOS_CUATRO_FANTASTICOS].[TipoAutoparte] (Codigo, Tipo)
-GO
-
---Creaci髇 clave forania de la tabla AutoParte con  Modelo
+--Creaci贸n clave forania de la tabla AutoParte con  Modelo
 ALTER TABLE [LOS_CUATRO_FANTASTICOS].[Autoparte]
 ADD CONSTRAINT FK_AutoParte_Modelo FOREIGN KEY (ModeloId)
 REFERENCES [LOS_CUATRO_FANTASTICOS].[Modelo] (Codigo)
 GO
 
---Creaci髇 clave forania de la tabla AutoParte con CategoriaAutoparte
+--Creaci贸n clave forania de la tabla AutoParte con CategoriaAutoparte
 ALTER TABLE [LOS_CUATRO_FANTASTICOS].[Autoparte]
 ADD CONSTRAINT FK_AutoParte_CategoriaAutoparte FOREIGN KEY (Categoria)
 REFERENCES [LOS_CUATRO_FANTASTICOS].[CategoriaAutoparte] (Codigo)
@@ -336,7 +328,18 @@ INSERT INTO [LOS_CUATRO_FANTASTICOS].[Sucursal] (Direccion, Mail, Telefono, Ciud
 	FROM [gd_esquema].[Maestra]
 	WHERE [SUCURSAL_CIUDAD] IS NOT NULL
 	ORDER BY [SUCURSAL_CIUDAD]
+GO
 
+--Inserto datos de Autoparte
+INSERT INTO [LOS_CUATRO_FANTASTICOS].Autoparte([Codigo], [Descripcion], [ModeloId], [Categoria])
+SELECT DISTINCT 
+	AUTO_PARTE_CODIGO,
+	AUTO_PARTE_DESCRIPCION,
+	MODELO_CODIGO,
+	null AS AUTO_PARTE_CATEGORIA
+FROM gd_esquema.Maestra
+WHERE AUTO_PARTE_CODIGO IS NOT NULL
+GO
 ------------------------------------------------------------
 --                                              FIN DATOS --
 ------------------------------------------------------------
