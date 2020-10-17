@@ -268,8 +268,20 @@ INSERT INTO [LOS_CUATRO_FANTASTICOS].[Fabricante] (Nombre)
 	ORDER BY [FABRICANTE_NOMBRE] 
 GO
 
-
-
+-- INserto datos de Modelo
+INSERT INTO [LOS_CUATRO_FANTASTICOS].[Modelo] (Codigo, Nombre, Potencia, FabricanteId)
+SELECT 
+	[MODELO_CODIGO],
+	[MODELO_NOMBRE],
+	[MODELO_POTENCIA],
+	fabricante.Id
+FROM gd_esquema.Maestra as maestra
+JOIN [LOS_CUATRO_FANTASTICOS].[Fabricante] as fabricante on maestra.FABRICANTE_NOMBRE = fabricante.Nombre
+GROUP BY 
+	[MODELO_CODIGO],
+	[MODELO_NOMBRE],
+	[MODELO_POTENCIA],
+	fabricante.Id
 
 ---Inserto datos de TipoAuto
 INSERT INTO [LOS_CUATRO_FANTASTICOS].[TipoAuto]([Codigo] ,[Descripcion])
@@ -280,7 +292,6 @@ where TIPO_AUTO_CODIGO is not null and TIPO_AUTO_DESC is not null
 
 GO
 
-
 ---Inserto datos de Tipo Transmision
 INSERT INTO [LOS_CUATRO_FANTASTICOS].[TipoAutoparte]([Codigo] ,[Descripcion], [Tipo])
 
@@ -290,8 +301,6 @@ WHERE [TIPO_TRANSMISION_CODIGO] IS NOT NULL AND [TIPO_TRANSMISION_DESC] IS NOT N
 
 GO
 
-
-
 ---Inserto datos de Tipo Caja
 INSERT INTO [LOS_CUATRO_FANTASTICOS].[TipoAutoparte]([Codigo] ,[Descripcion], [Tipo])
 
@@ -300,7 +309,6 @@ FROM [GD2C2020].[gd_esquema].[Maestra]
 WHERE TIPO_CAJA_CODIGO IS NOT NULL AND TIPO_CAJA_DESC IS NOT NULL
 
 GO
-
 
 ---Inserto datos de Tipo Motor
 INSERT INTO [LOS_CUATRO_FANTASTICOS].[TipoAutoparte]([Codigo] ,[Descripcion], [Tipo])
