@@ -103,6 +103,7 @@ CREATE TABLE [LOS_CUATRO_FANTASTICOS].[Autoparte] (
 	ModeloId DECIMAL(18,0) NOT NULL,
 	Categoria DECIMAL(18,0) NOT NULL,
 	TipoAutoparteCodigo DECIMAL(18,0) NOT NULL,
+	TipoAutoparte NVARCHAR(11) NOT NULL,
 )
 GO
 
@@ -134,8 +135,10 @@ GO
 
 --Creación tabla TipoAutoparte
 CREATE TABLE [LOS_CUATRO_FANTASTICOS].[TipoAutoparte] (
-	Codigo DECIMAL(18,0) PRIMARY KEY,
+	Codigo DECIMAL(18,0) NOT NULL,
 	Descripcion NVARCHAR(255)  NULL,
+	Tipo NVARCHAR(11) NOT NULL,
+	CONSTRAINT PK_TipoAutoparte PRIMARY KEY (Codigo, Tipo)
 )
 GO
 
@@ -199,10 +202,17 @@ ADD CONSTRAINT FK_Modelo_Fabricante FOREIGN KEY (FabricanteId)
 REFERENCES [LOS_CUATRO_FANTASTICOS].[Fabricante] (Id)
 GO
 
---Creación clave forania de la tabla AutoParte con TipoAutoparte
+----Creación clave forania de la tabla AutoParte con TipoAutoparte
 ALTER TABLE [LOS_CUATRO_FANTASTICOS].[Autoparte]
-ADD CONSTRAINT FK_AutoParte_TipoAutoparte FOREIGN KEY (TipoAutoparteCodigo)
+ADD CONSTRAINT FK_AutoParte_TipoAutoparteCodigo FOREIGN KEY (TipoAutoparteCodigo)
 REFERENCES [LOS_CUATRO_FANTASTICOS].[TipoAutoparte] (Codigo)
+GO
+
+
+----Creación clave forania de la tabla AutoParte con Tipo
+ALTER TABLE [LOS_CUATRO_FANTASTICOS].[Autoparte]
+ADD CONSTRAINT FK_AutoParte_TipoAutoparte FOREIGN KEY (TipoAutoparte)
+REFERENCES [LOS_CUATRO_FANTASTICOS].[TipoAutoparte] (Tipo)
 GO
 
 --Creación clave forania de la tabla AutoParte con  Modelo
@@ -256,6 +266,49 @@ INSERT INTO [LOS_CUATRO_FANTASTICOS].[Fabricante] (Nombre)
 	FROM gd_esquema.Maestra 
 	GROUP BY [FABRICANTE_NOMBRE]
 	ORDER BY [FABRICANTE_NOMBRE] 
+GO
+
+
+
+
+---Inserto datos de TipoAuto
+INSERT INTO [LOS_CUATRO_FANTASTICOS].[TipoAuto]([Codigo] ,[Descripcion])
+
+select distinct TIPO_AUTO_CODIGO, TIPO_AUTO_DESC
+FROM [GD2C2020].[gd_esquema].[Maestra]
+where TIPO_AUTO_CODIGO is not null and TIPO_AUTO_DESC is not null
+
+GO
+
+
+---Inserto datos de Tipo Transmision
+INSERT INTO [LOS_CUATRO_FANTASTICOS].[TipoAutoparte]([Codigo] ,[Descripcion], [Tipo])
+
+SELECT distinct [TIPO_TRANSMISION_CODIGO], [TIPO_TRANSMISION_DESC], 'Transmision'
+FROM [GD2C2020].[gd_esquema].[Maestra]
+WHERE [TIPO_TRANSMISION_CODIGO] IS NOT NULL AND [TIPO_TRANSMISION_DESC] IS NOT NULL
+
+GO
+
+
+
+---Inserto datos de Tipo Caja
+INSERT INTO [LOS_CUATRO_FANTASTICOS].[TipoAutoparte]([Codigo] ,[Descripcion], [Tipo])
+
+SELECT distinct TIPO_CAJA_CODIGO, TIPO_CAJA_DESC, 'Caja'
+FROM [GD2C2020].[gd_esquema].[Maestra]
+WHERE TIPO_CAJA_CODIGO IS NOT NULL AND TIPO_CAJA_DESC IS NOT NULL
+
+GO
+
+
+---Inserto datos de Tipo Motor
+INSERT INTO [LOS_CUATRO_FANTASTICOS].[TipoAutoparte]([Codigo] ,[Descripcion], [Tipo])
+
+ SELECT distinct TIPO_MOTOR_CODIGO, NULL, 'Motor' 
+ FROM [GD2C2020].[gd_esquema].[Maestra]
+ WHERE TIPO_MOTOR_CODIGO IS NOT NULL
+
 GO
 
 ------------------------------------------------------------
