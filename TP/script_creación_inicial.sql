@@ -83,7 +83,7 @@ CREATE TABLE [LOS_CUATRO_FANTASTICOS].[Factura] (
 )
 GO
 
---CREO LA TABLA AUTO
+--Creación tabla Auto
 CREATE TABLE [LOS_CUATRO_FANTASTICOS].[Auto] (
 	Id INT PRIMARY KEY,
 	Chasis NVARCHAR(50) NULL,
@@ -96,7 +96,7 @@ CREATE TABLE [LOS_CUATRO_FANTASTICOS].[Auto] (
 )
 GO
 
---CREO LA TABLA AUTOPARTE
+--Creación tabla Autoparte
 CREATE TABLE [LOS_CUATRO_FANTASTICOS].[Autoparte] (
 	Codigo DECIMAL(18,0) PRIMARY KEY,
 	Descripcion NVARCHAR(255) NULL,
@@ -125,35 +125,35 @@ CREATE TABLE [LOS_CUATRO_FANTASTICOS].[CompraAutoparte] (
 )
 GO
 
---CREO LA TABLA TIPOAUTO
+--Creación tabla TipoAuto
 CREATE TABLE [LOS_CUATRO_FANTASTICOS].[TipoAuto] (
 	Codigo DECIMAL(18,0) PRIMARY KEY,
 	Descripcion NVARCHAR(255) NULL,
 )
 GO
 
---CREO LA TABLA TIPOAUTOPARTE
+--Creación tabla TipoAutoparte
 CREATE TABLE [LOS_CUATRO_FANTASTICOS].[TipoAutoparte] (
 	Codigo DECIMAL(18,0) PRIMARY KEY,
 	Descripcion NVARCHAR(255)  NULL,
 )
 GO
 
---CREO LA TABLA CATEGORIAAUTOPARTE
+--Creación tabla CategoriaAutoparte
 CREATE TABLE [LOS_CUATRO_FANTASTICOS].[CategoriaAutoparte] (
 	Codigo DECIMAL(18,0) PRIMARY KEY,
 	Descripcion NVARCHAR(255)  NULL,
 )
 GO
 
---CREO LA TABLA FABRICANTE
+--Creación tabla Fabricante
 CREATE TABLE [LOS_CUATRO_FANTASTICOS].[Fabricante] (
 	Id INT PRIMARY KEY,
 	Nombre NVARCHAR(255) NULL,
 )
 GO
 
---CREO LA TABLA MODELO
+--Creación tabla Modelo
 CREATE TABLE [LOS_CUATRO_FANTASTICOS].[Modelo] (
 	Codigo DECIMAL(18,0) PRIMARY KEY,
 	Nombre  NVARCHAR(50) NULL,
@@ -162,58 +162,58 @@ CREATE TABLE [LOS_CUATRO_FANTASTICOS].[Modelo] (
 )
 GO
 
---CREO LA TABLA FACTURACIONAUTO
+--Creación tabla FacturaAuto
 CREATE TABLE [LOS_CUATRO_FANTASTICOS].[FacturaAuto] (
-	FacturaNumero DECIMAL(18,0),
-	AutoId  INT,
+	FacturaNumero DECIMAL(18,0) REFERENCES [LOS_CUATRO_FANTASTICOS].[Factura],
+	AutoId  INT REFERENCES [LOS_CUATRO_FANTASTICOS].[Auto],
 	Precio  DECIMAL(18,2) NOT NULL,
-	PRIMARY KEY(FacturaNumero, AutoId)
+	CONSTRAINT PK_FacturaAuto PRIMARY KEY (FacturaNumero, AutoId)
 )
 GO
 
---CREO LA TABLA FACTURACIONAUTOPARTE
+--Creación tabla FacturaAutoparte
 CREATE TABLE [LOS_CUATRO_FANTASTICOS].[FacturaAutoparte] (
-	FacturaNumero DECIMAL(18,0),
-	AutoparteId  INT,
+	FacturaNumero DECIMAL(18,0) REFERENCES [LOS_CUATRO_FANTASTICOS].[Factura],
+	AutoparteId  DECIMAL(18,0) REFERENCES [LOS_CUATRO_FANTASTICOS].[Autoparte],
 	Cantidad DECIMAL(18,2) NOT NULL,
 	Precio  DECIMAL(18,2) NOT NULL,
-	PRIMARY KEY(FacturaNumero, AutoparteId)
+	CONSTRAINT PK_FacturaAutoparte PRIMARY KEY(FacturaNumero, AutoparteId)
 )
 GO
 
---CREO CLAVE FORANIA DE LA TABLA AUTO CON  TIPOAUTO
-ALTER TABLE [LOS_CUATRO_FANTASTICOS].[Auto]  
-ADD CONSTRAINT fk_auto_tipoAuto FOREIGN KEY (TipoAutoCodigo)
+--Creación clave forania de la tabla Auto con  TIPOAUTO
+ALTER TABLE [LOS_CUATROS_FANTASTICOS].[Auto]  
+ADD CONSTRAINT FK_Auto_TipoAuto FOREIGN KEY (TipoAutoCodigo)
 REFERENCES [LOS_CUATRO_FANTASTICOS].[TipoAuto] (Codigo)
 GO
 
---CREO CLAVE FORANIA DE LA TABLA AUTO CON MODELO
+--Creación clave forania de la tabla Auto con Modelo
 ALTER TABLE [LOS_CUATRO_FANTASTICOS].[Auto]
-ADD CONSTRAINT fk_auto_modelo FOREIGN KEY (ModeloCodigo)
+ADD CONSTRAINT FK_Auto_Modelo FOREIGN KEY (ModeloCodigo)
 REFERENCES [LOS_CUATRO_FANTASTICOS].[Modelo] (Codigo)
 GO
 
---CREO CLAVE FORANIAS DE LA TABLA MODELO CON FABRICANTE
+--Creación clave forania de la tabla Modelo con Fabricante
 ALTER TABLE [LOS_CUATRO_FANTASTICOS].[Modelo]
-ADD CONSTRAINT fk_modelo_fabricante FOREIGN KEY (FabricanteId)
+ADD CONSTRAINT FK_Modelo_Fabricante FOREIGN KEY (FabricanteId)
 REFERENCES [LOS_CUATRO_FANTASTICOS].[Fabricante] (Id)
 GO
 
---CREO CLAVE FORANIAS DE LA TABLA AUTOPARTE CON TIPOAUTOPARTE
+--Creación clave forania de la tabla AutoParte con TipoAutoparte
 ALTER TABLE [LOS_CUATRO_FANTASTICOS].[Autoparte]
-ADD CONSTRAINT fk_autoParte_tipoAutoparte FOREIGN KEY (TipoAutoparteCodigo)
+ADD CONSTRAINT FK_AutoParte_TipoAutoparte FOREIGN KEY (TipoAutoparteCodigo)
 REFERENCES [LOS_CUATRO_FANTASTICOS].[TipoAutoparte] (Codigo)
 GO
 
---CREO CLAVE FORANIAS DE LA TABLA AUTOPARTE CON  MODELO
+--Creación clave forania de la tabla AutoParte con  Modelo
 ALTER TABLE [LOS_CUATRO_FANTASTICOS].[Autoparte]
-ADD CONSTRAINT fk_autoParte_modelo FOREIGN KEY (ModeloId)
+ADD CONSTRAINT FK_AutoParte_Modelo FOREIGN KEY (ModeloId)
 REFERENCES [LOS_CUATRO_FANTASTICOS].[Modelo] (Codigo)
 GO
 
---CREO CLAVE FORANIAS DE LA TABLA AUTOPARTE CON CATEGORIAAUTOPARTE
+--Creación clave forania de la tabla AutoParte con CategoriaAutoparte
 ALTER TABLE [LOS_CUATRO_FANTASTICOS].[Autoparte]
-ADD CONSTRAINT fk_autoParte_categoriaAutoparte FOREIGN KEY (Categoria)
+ADD CONSTRAINT FK_AutoParte_CategoriaAutoparte FOREIGN KEY (Categoria)
 REFERENCES [LOS_CUATRO_FANTASTICOS].[CategoriaAutoparte] (Codigo)
 GO
 
