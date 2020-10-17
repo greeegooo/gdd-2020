@@ -1,9 +1,24 @@
+USE [GD2C2020]
+GO
+
+------------------------------------------------------------
+--                                                ESQUEMA --
+------------------------------------------------------------
+
+-- Creación de esquema 
+CREATE SCHEMA [LOS_CUATROS_FANTASTICOS]
+GO
+
+------------------------------------------------------------
+--                                            FIN ESQUEMA --
+------------------------------------------------------------
+
 ------------------------------------------------------------
 --                                                 TABLAS --
 ------------------------------------------------------------
 
 -- Creación tabla Cliente
-CREATE TABLE [Cliente] (
+CREATE TABLE [LOS_CUATROS_FANTASTICOS].[Cliente] (
 	Id INT PRIMARY KEY IDENTITY(1,1),
 	Nombre NVARCHAR(255) NULL,
 	Apellido NVARCHAR(255) NULL,
@@ -15,7 +30,7 @@ CREATE TABLE [Cliente] (
 GO
 
 -- Creación tabla Sucursal
-CREATE TABLE [Sucursal] (
+CREATE TABLE [LOS_CUATROS_FANTASTICOS].[Sucursal] (
 	Id INT PRIMARY KEY IDENTITY(1,1),
 	Direccion NVARCHAR(255) NULL,
 	Mail NVARCHAR(255) NULL,
@@ -25,17 +40,17 @@ CREATE TABLE [Sucursal] (
 GO
 
 -- Creación tabla Compra
-CREATE TABLE [Compra] (
+CREATE TABLE [LOS_CUATROS_FANTASTICOS].[Compra] (
 	Numero DECIMAL(18,0) PRIMARY KEY IDENTITY(1,1),
 	Fecha DATETIME2(3) NOT NULL,
 	Precio DECIMAL(18,2) NOT NULL,
-	SucursalId INT NOT NULL REFERENCES Sucursal,
-	ClienteId INT NOT NULL REFERENCES Cliente
+	SucursalId INT NOT NULL REFERENCES [LOS_CUATROS_FANTASTICOS].[Sucursal],
+	ClienteId INT NOT NULL REFERENCES [LOS_CUATROS_FANTASTICOS].[Cliente]
 ) 
 GO
 
 -- Creación tabla FacturaCliente
-CREATE TABLE [FacturaCliente] (
+CREATE TABLE [LOS_CUATROS_FANTASTICOS].[FacturaCliente] (
 	Id INT PRIMARY KEY IDENTITY(1,1),
 	Nombre NVARCHAR(255) NULL,
 	Apellido NVARCHAR(255) NULL,
@@ -47,7 +62,7 @@ CREATE TABLE [FacturaCliente] (
 GO
 
 -- Creación tabla FacturaSucursal
-CREATE TABLE [FacturaSucursal] (
+CREATE TABLE [LOS_CUATROS_FANTASTICOS].[FacturaSucursal] (
 	Id INT PRIMARY KEY IDENTITY(1,1),
 	Direccion NVARCHAR(255) NULL,
 	Mail NVARCHAR(255) NULL,
@@ -57,19 +72,19 @@ CREATE TABLE [FacturaSucursal] (
 GO
 
 -- Creación tabla Factura
-CREATE TABLE [Factura] (
+CREATE TABLE [LOS_CUATROS_FANTASTICOS].[Factura] (
 	Numero DECIMAL(18,0) PRIMARY KEY IDENTITY(1,1),
 	Fecha DATETIME2(3) NOT NULL,
 	Precio DECIMAL(18,2) NOT NULL,
-	ClienteId INT NOT NULL REFERENCES Cliente,
-	FacturaClienteId INT NOT NULL REFERENCES FacturaCliente,
-	SucursalId INT NOT NULL REFERENCES Sucursal,
-	FacturaSucursalId INT NOT NULL REFERENCES FacturaSucursal
+	ClienteId INT NOT NULL REFERENCES [LOS_CUATROS_FANTASTICOS].[Cliente],
+	FacturaClienteId INT NOT NULL REFERENCES [LOS_CUATROS_FANTASTICOS].[FacturaCliente],
+	SucursalId INT NOT NULL REFERENCES [LOS_CUATROS_FANTASTICOS].[Sucursal],
+	FacturaSucursalId INT NOT NULL REFERENCES [LOS_CUATROS_FANTASTICOS].[FacturaSucursal]
 )
 GO
 
 --CREO LA TABLA AUTO
-CREATE TABLE [Auto] (
+CREATE TABLE [LOS_CUATROS_FANTASTICOS].[Auto] (
 	Id INT PRIMARY KEY,
 	Chasis NVARCHAR(50) NULL,
 	Motor  NVARCHAR(50) NULL,
@@ -82,7 +97,7 @@ CREATE TABLE [Auto] (
 GO
 
 --CREO LA TABLA AUTOPARTE
-CREATE TABLE [Autoparte] (
+CREATE TABLE [LOS_CUATROS_FANTASTICOS].[Autoparte] (
 	Codigo DECIMAL(18,0) PRIMARY KEY,
 	Descripcion NVARCHAR(255) NULL,
 	ModeloId DECIMAL(18,0) NOT NULL,
@@ -92,18 +107,18 @@ CREATE TABLE [Autoparte] (
 GO
 
 -- Creación tabla CompraAuto
-CREATE TABLE [CompraAuto] (
-	CompraNumero DECIMAL(18,0) REFERENCES [Compra],
-	AutoId INT REFERENCES [Auto],
+CREATE TABLE [LOS_CUATROS_FANTASTICOS].[CompraAuto] (
+	CompraNumero DECIMAL(18,0) REFERENCES [LOS_CUATROS_FANTASTICOS].[Compra],
+	AutoId INT REFERENCES [LOS_CUATROS_FANTASTICOS].[Auto],
 	Precio DECIMAL(18,2) NOT NULL,
 	CONSTRAINT CONSTRAINT_CompraAuto_PK PRIMARY KEY (CompraNumero, AutoId)
 )
 GO
 
 -- Creación tabla CompraAutoparte
-CREATE TABLE [CompraAutoparte] (
-	CompraNumero DECIMAL(18,0) REFERENCES [Compra],
-	AutoparteId DECIMAL(18,0) REFERENCES [Autoparte],
+CREATE TABLE [LOS_CUATROS_FANTASTICOS].[CompraAutoparte] (
+	CompraNumero DECIMAL(18,0) REFERENCES [LOS_CUATROS_FANTASTICOS].[Compra],
+	AutoparteId DECIMAL(18,0) REFERENCES [LOS_CUATROS_FANTASTICOS].[Autoparte],
 	Cantidad DECIMAL(18,2) NOT NULL,
 	Precio DECIMAL(18,2) NOT NULL,
 	CONSTRAINT CONSTRAINT_CompraAutoparte_PK PRIMARY KEY (CompraNumero, AutoparteId)
@@ -111,35 +126,35 @@ CREATE TABLE [CompraAutoparte] (
 GO
 
 --CREO LA TABLA TIPOAUTO
-CREATE TABLE [TipoAuto] (
+CREATE TABLE [LOS_CUATROS_FANTASTICOS].[TipoAuto] (
 	Codigo DECIMAL(18,0) PRIMARY KEY,
 	Descripcion NVARCHAR(255) NULL,
 )
 GO
 
 --CREO LA TABLA TIPOAUTOPARTE
-CREATE TABLE [TipoAutoparte] (
+CREATE TABLE [LOS_CUATROS_FANTASTICOS].[TipoAutoparte] (
 	Codigo DECIMAL(18,0) PRIMARY KEY,
 	Descripcion NVARCHAR(255)  NULL,
 )
 GO
 
 --CREO LA TABLA CATEGORIAAUTOPARTE
-CREATE TABLE [CategoriaAutoparte] (
+CREATE TABLE [LOS_CUATROS_FANTASTICOS].[CategoriaAutoparte] (
 	Codigo DECIMAL(18,0) PRIMARY KEY,
 	Descripcion NVARCHAR(255)  NULL,
 )
 GO
 
 --CREO LA TABLA FABRICANTE
-CREATE TABLE [Fabricante] (
+CREATE TABLE [LOS_CUATROS_FANTASTICOS].[Fabricante] (
 	Id INT PRIMARY KEY,
 	Nombre NVARCHAR(255) NULL,
 )
 GO
 
 --CREO LA TABLA MODELO
-CREATE TABLE [Modelo] (
+CREATE TABLE [LOS_CUATROS_FANTASTICOS].[Modelo] (
 	Codigo DECIMAL(18,0) PRIMARY KEY,
 	Nombre  NVARCHAR(50) NULL,
 	Potencia  NVARCHAR(50) NULL,
@@ -148,7 +163,7 @@ CREATE TABLE [Modelo] (
 GO
 
 --CREO LA TABLA FACTURACIONAUTO
-CREATE TABLE [FacturaAuto] (
+CREATE TABLE [LOS_CUATROS_FANTASTICOS].[FacturaAuto] (
 	FacturaNumero DECIMAL(18,0),
 	AutoId  INT,
 	Precio  DECIMAL(18,2) NOT NULL,
@@ -157,7 +172,7 @@ CREATE TABLE [FacturaAuto] (
 GO
 
 --CREO LA TABLA FACTURACIONAUTOPARTE
-CREATE TABLE [FacturaAutoparte] (
+CREATE TABLE [LOS_CUATROS_FANTASTICOS].[FacturaAutoparte] (
 	FacturaNumero DECIMAL(18,0),
 	AutoparteId  INT,
 	Cantidad DECIMAL(18,2) NOT NULL,
@@ -167,45 +182,39 @@ CREATE TABLE [FacturaAutoparte] (
 GO
 
 --CREO CLAVE FORANIA DE LA TABLA AUTO CON  TIPOAUTO
-ALTER TABLE Auto  
-ADD CONSTRAINT fk_auto_tipoAuto FOREIGN KEY
-(TipoAutoCodigo)
-REFERENCES TipoAuto (Codigo)
+ALTER TABLE [LOS_CUATROS_FANTASTICOS].[Auto]  
+ADD CONSTRAINT fk_auto_tipoAuto FOREIGN KEY (TipoAutoCodigo)
+REFERENCES [LOS_CUATROS_FANTASTICOS].[TipoAuto] (Codigo)
 GO
 
 --CREO CLAVE FORANIA DE LA TABLA AUTO CON MODELO
-ALTER TABLE Auto  
-ADD CONSTRAINT fk_auto_modelo FOREIGN KEY
-(ModeloCodigo)
-REFERENCES Modelo (Codigo)
+ALTER TABLE [LOS_CUATROS_FANTASTICOS].[Auto]
+ADD CONSTRAINT fk_auto_modelo FOREIGN KEY (ModeloCodigo)
+REFERENCES [LOS_CUATROS_FANTASTICOS].[Modelo] (Codigo)
 GO
 
 --CREO CLAVE FORANIAS DE LA TABLA MODELO CON FABRICANTE
-ALTER TABLE Modelo  
-ADD CONSTRAINT fk_modelo_fabricante FOREIGN KEY
-(FabricanteId)
-REFERENCES Fabricante (Id)
+ALTER TABLE [LOS_CUATROS_FANTASTICOS].[Modelo]
+ADD CONSTRAINT fk_modelo_fabricante FOREIGN KEY (FabricanteId)
+REFERENCES [LOS_CUATROS_FANTASTICOS].[Fabricante] (Id)
 GO
 
 --CREO CLAVE FORANIAS DE LA TABLA AUTOPARTE CON TIPOAUTOPARTE
-ALTER TABLE Autoparte  
-ADD CONSTRAINT fk_autoParte_tipoAutoparte FOREIGN KEY
-(TipoAutoparteCodigo)
-REFERENCES TipoAutoparte (Codigo)
+ALTER TABLE [LOS_CUATROS_FANTASTICOS].[Autoparte]
+ADD CONSTRAINT fk_autoParte_tipoAutoparte FOREIGN KEY (TipoAutoparteCodigo)
+REFERENCES [LOS_CUATROS_FANTASTICOS].[TipoAutoparte] (Codigo)
 GO
 
 --CREO CLAVE FORANIAS DE LA TABLA AUTOPARTE CON  MODELO
-ALTER TABLE Autoparte  
-ADD CONSTRAINT fk_autoParte_modelo FOREIGN KEY
-(ModeloId)
-REFERENCES Modelo (Codigo)
+ALTER TABLE [LOS_CUATROS_FANTASTICOS].[Autoparte]
+ADD CONSTRAINT fk_autoParte_modelo FOREIGN KEY (ModeloId)
+REFERENCES [LOS_CUATROS_FANTASTICOS].[Modelo] (Codigo)
 GO
 
 --CREO CLAVE FORANIAS DE LA TABLA AUTOPARTE CON CATEGORIAAUTOPARTE
-ALTER TABLE Autoparte  
-ADD CONSTRAINT fk_autoParte_categoriaAutoparte FOREIGN KEY
-(Categoria)
-REFERENCES CategoriaAutoparte (Codigo)
+ALTER TABLE [LOS_CUATROS_FANTASTICOS].[Autoparte]
+ADD CONSTRAINT fk_autoParte_categoriaAutoparte FOREIGN KEY (Categoria)
+REFERENCES [LOS_CUATROS_FANTASTICOS].[CategoriaAutoparte] (Codigo)
 GO
 
 ------------------------------------------------------------
