@@ -210,15 +210,8 @@ GO
 
 ----Creación clave forania de la tabla AutoParte con TipoAutoparte
 ALTER TABLE [LOS_CUATRO_FANTASTICOS].[Autoparte]
-ADD CONSTRAINT FK_AutoParte_TipoAutoparteCodigo FOREIGN KEY (TipoAutoparteCodigo)
-REFERENCES [LOS_CUATRO_FANTASTICOS].[TipoAutoparte] (Codigo)
-GO
-
-
-----Creación clave forania de la tabla AutoParte con Tipo
-ALTER TABLE [LOS_CUATRO_FANTASTICOS].[Autoparte]
-ADD CONSTRAINT FK_AutoParte_TipoAutoparte FOREIGN KEY (TipoAutoparte)
-REFERENCES [LOS_CUATRO_FANTASTICOS].[TipoAutoparte] (Tipo)
+ADD CONSTRAINT FK_AutoParte_TipoAutoparteCodigo_TipoAutoparte FOREIGN KEY (TipoAutoparteCodigo, TipoAutoparte)
+REFERENCES [LOS_CUATRO_FANTASTICOS].[TipoAutoparte] (Codigo, Tipo)
 GO
 
 --Creación clave forania de la tabla AutoParte con  Modelo
