@@ -408,6 +408,25 @@ GO
 		[FAC_SUCURSAL_TELEFONO],
 		[FAC_SUCURSAL_CIUDAD])
 GO
+
+-- Insert datos Factura
+--SET IDENTITY_INSERT [LOS_CUATRO_FANTASTICOS].[Factura] ON
+--INSERT INTO [LOS_CUATRO_FANTASTICOS].[Factura] (Numero, Fecha, Precio, ClienteId, FacturaClienteId, SucursalId, FacturaSucursalId)
+--	SELECT 
+--		Numero = maestra.FACTURA_NRO
+--		,Fecha = maestra.FACTURA_FECHA
+--		,Precio = SUM(maestra.PRECIO_FACTURADO)
+--		,1
+--		,1
+--		,1
+--		,1
+--	FROM gd_esquema.Maestra as maestra
+--	WHERE FACTURA_NRO IS NOT NULL -- 57930 facturas
+--	GROUP BY 
+--		FACTURA_NRO,
+--		FACTURA_FECHA
+--SET IDENTITY_INSERT [LOS_CUATRO_FANTASTICOS].[Factura] OFF
+
 ------------------------------------------------------------
 --                                              FIN DATOS --
 ------------------------------------------------------------
