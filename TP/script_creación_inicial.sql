@@ -174,6 +174,9 @@ CREATE TABLE [LOS_CUATRO_FANTASTICOS].[Modelo] (
 	Nombre  NVARCHAR(50) NULL,
 	Potencia  NVARCHAR(50) NULL,
 	FabricanteId INT NOT NULL,
+	TipoCajaId DECIMAL(18,0) NULL,
+	TipoMotorId DECIMAL(18,0) NULL,
+	TipoTransmisionId DECIMAL(18,0) NULL,
 )
 GO
 
@@ -212,6 +215,25 @@ GO
 ALTER TABLE [LOS_CUATRO_FANTASTICOS].[Modelo]
 ADD CONSTRAINT FK_Modelo_Fabricante FOREIGN KEY (FabricanteId)
 REFERENCES [LOS_CUATRO_FANTASTICOS].[Fabricante] (Id)
+GO
+
+--Creación clave forania de la tabla Modelo con tipo caja
+ALTER TABLE [LOS_CUATRO_FANTASTICOS].[Modelo]
+ADD CONSTRAINT FK_Modelo_Caja FOREIGN KEY (TipoCajaId)
+REFERENCES [LOS_CUATRO_FANTASTICOS].[Caja] (Codigo)
+GO
+
+
+--Creación clave forania de la tabla Modelo con tipo transmision
+ALTER TABLE [LOS_CUATRO_FANTASTICOS].[Modelo]
+ADD CONSTRAINT FK_Modelo_Transmision FOREIGN KEY (TipoTransmisionId)
+REFERENCES [LOS_CUATRO_FANTASTICOS].[Transmision] (Codigo)
+GO
+
+--Creación clave forania de la tabla Modelo con tipo motor
+ALTER TABLE [LOS_CUATRO_FANTASTICOS].[Modelo]
+ADD CONSTRAINT FK_Modelo_Motor FOREIGN KEY (TipoMotorId)
+REFERENCES [LOS_CUATRO_FANTASTICOS].[Motor] (Codigo)
 GO
 
 --Creación clave forania de la tabla AutoParte con  Modelo
@@ -267,43 +289,20 @@ INSERT INTO [LOS_CUATRO_FANTASTICOS].[Fabricante] (Nombre)
 	ORDER BY [FABRICANTE_NOMBRE] 
 GO
 
--- Inserto datos de Modelo
-INSERT INTO [LOS_CUATRO_FANTASTICOS].[Modelo] (Codigo, Nombre, Potencia, FabricanteId)
-	SELECT 
-		[MODELO_CODIGO],
-		[MODELO_NOMBRE],
-		[MODELO_POTENCIA],
-		fabricante.Id
-	FROM gd_esquema.Maestra as maestra
-	JOIN [LOS_CUATRO_FANTASTICOS].[Fabricante] as fabricante on maestra.FABRICANTE_NOMBRE = fabricante.Nombre
-	GROUP BY 
-		[MODELO_CODIGO],
-		[MODELO_NOMBRE],
-		[MODELO_POTENCIA],
-		fabricante.Id
-GO
-
----Inserto datos de TipoAuto
-INSERT INTO [LOS_CUATRO_FANTASTICOS].[TipoAuto]([Codigo] ,[Descripcion])
-	SELECT DISTINCT TIPO_AUTO_CODIGO, TIPO_AUTO_DESC
-	FROM [GD2C2020].[gd_esquema].[Maestra]
-	WHERE TIPO_AUTO_CODIGO is not null and TIPO_AUTO_DESC is not null
-
-GO
 
 ---Inserto datos de Tipo Transmision
-INSERT INTO [LOS_CUATRO_FANTASTICOS].[Caja]([Codigo] ,[Descripcion])
+INSERT INTO [LOS_CUATRO_FANTASTICOS].[Transmision]([Codigo] ,[Descripcion])
 	SELECT DISTINCT [TIPO_TRANSMISION_CODIGO], [TIPO_TRANSMISION_DESC]
 	FROM [GD2C2020].[gd_esquema].[Maestra]
-	WHERE [TIPO_TRANSMISION_CODIGO] IS NOT NULL AND [TIPO_TRANSMISION_DESC] IS NOT NULL
+	WHERE [TIPO_TRANSMISION_CODIGO] IS NOT NULL
 
 GO
 
 ---Inserto datos de Tipo Caja
-INSERT INTO [LOS_CUATRO_FANTASTICOS].[Transmision]([Codigo] ,[Descripcion])
+INSERT INTO [LOS_CUATRO_FANTASTICOS].[Caja]([Codigo] ,[Descripcion])
 	SELECT DISTINCT TIPO_CAJA_CODIGO, TIPO_CAJA_DESC
 	FROM [GD2C2020].[gd_esquema].[Maestra]
-	WHERE TIPO_CAJA_CODIGO IS NOT NULL AND TIPO_CAJA_DESC IS NOT NULL
+	WHERE TIPO_CAJA_CODIGO IS NOT NULL 
 
 GO
 
@@ -315,6 +314,30 @@ INSERT INTO [LOS_CUATRO_FANTASTICOS].[Motor]([Codigo] ,[Descripcion])
 
 GO
 
+-- Inserto datos de Modelo
+INSERT INTO [LOS_CUATRO_FANTASTICOS].[Modelo] (Codigo, Nombre, Potencia, FabricanteId, [TipoCajaId], [TipoMotorId], [TipoTransmisionId])
+	 select m.MODELO_CODIGO, m.MODELO_NOMBRE, m.MODELO_POTENCIA, f.Id, m.TIPO_CAJA_CODIGO, m.TIPO_MOTOR_CODIGO, m.TIPO_TRANSMISION_CODIGO
+  FROM [GD2C2020].[gd_esquema].[Maestra] m
+  INNER JOIN [LOS_CUATRO_FANTASTICOS].[Fabricante] f on m.FABRICANTE_NOMBRE = f.[Nombre]
+  INNER JOIN [LOS_CUATRO_FANTASTICOS].[Caja] c on m.TIPO_CAJA_CODIGO = c.[Codigo]
+  INNER JOIN [LOS_CUATRO_FANTASTICOS].[Motor] mo on m.TIPO_MOTOR_CODIGO = mo.[Codigo]
+  INNER JOIN [LOS_CUATRO_FANTASTICOS].[Transmision] t on m.TIPO_TRANSMISION_CODIGO = t.[Codigo]
+  GROUP BY 
+		m.[MODELO_CODIGO],
+		m.[MODELO_NOMBRE],
+		m.[MODELO_POTENCIA],
+		f.Id,m.TIPO_CAJA_CODIGO, m.TIPO_MOTOR_CODIGO, m.TIPO_TRANSMISION_CODIGO
+
+order by m.MODELO_CODIGO 
+GO
+
+---Inserto datos de TipoAuto
+INSERT INTO [LOS_CUATRO_FANTASTICOS].[TipoAuto]([Codigo] ,[Descripcion])
+	SELECT DISTINCT TIPO_AUTO_CODIGO, TIPO_AUTO_DESC
+	FROM [GD2C2020].[gd_esquema].[Maestra]
+	WHERE TIPO_AUTO_CODIGO is not null and TIPO_AUTO_DESC is not null
+
+GO
 
 ---Inserto datos de Cliente
 INSERT INTO [LOS_CUATRO_FANTASTICOS].[Cliente]
