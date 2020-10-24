@@ -497,8 +497,78 @@ INSERT INTO [LOS_CUATRO_FANTASTICOS].[Factura] (
 
 SET IDENTITY_INSERT [LOS_CUATRO_FANTASTICOS].[Factura] OFF
 
+-- INSERT datos Compra Auto
+INSERT INTO LOS_CUATRO_FANTASTICOS.CompraAuto(CompraNumero, AutoId, Precio)
+SELECT 
+	compraMaestra.COMPRA_NRO, 
+	autoTb.Id,
+	compraMaestra.COMPRA_PRECIO
+FROM (
+	SELECT 
+		gm.COMPRA_NRO,
+		gm.COMPRA_PRECIO,
+		gm.AUTO_PATENTE
+	FROM gd_esquema.Maestra gm
+	WHERE gm.AUTO_PARTE_CODIGO IS NULL
+) as compraMaestra
+JOIN LOS_CUATRO_FANTASTICOS.Auto autoTb ON autoTb.Patente = compraMaestra.AUTO_PATENTE
+
+
+-- INSERT datos Compra AutoParte
+INSERT INTO LOS_CUATRO_FANTASTICOS.CompraAutoparte(CompraNumero, AutoparteId, Precio, Cantidad)
+SELECT 
+	compraMaestra.COMPRA_NRO, 
+	autoparteTb.Codigo,
+	compraMaestra.COMPRA_PRECIO,
+	compraMaestra.COMPRA_CANT
+FROM (
+	SELECT 
+		gm.COMPRA_NRO,
+		gm.COMPRA_PRECIO,
+		gm.AUTO_PARTE_CODIGO,
+		gm.COMPRA_CANT
+	FROM gd_esquema.Maestra gm
+	WHERE gm.AUTO_PARTE_CODIGO IS NOT NULL
+) as compraMaestra
+JOIN LOS_CUATRO_FANTASTICOS.Autoparte autoparteTb ON autoparteTb.Codigo = compraMaestra.AUTO_PARTE_CODIGO
+
+-- INSERT datos FacturaAuto
+INSERT INTO LOS_CUATRO_FANTASTICOS.FacturaAuto(FacturaNumero, AutoId, Precio)
+SELECT
+	autoFactura.FACTURA_NRO,
+	autoTb.Id,
+	autoFactura.PRECIO_FACTURADO
+FROM (
+	SELECT
+		gm.FACTURA_NRO,
+		gm.AUTO_PATENTE,
+		gm.PRECIO_FACTURADO
+	FROM gd_esquema.Maestra gm
+	WHERE gm.FACTURA_FECHA IS NOT NULL AND gm.AUTO_PATENTE IS NOT NULL
+) as autoFactura
+JOIN LOS_CUATRO_FANTASTICOS.Auto autoTb ON autoTb.Patente = autoFactura.AUTO_PATENTE;
+
+-- INSERT datos FacturaAutoparte
+INSERT INTO LOS_CUATRO_FANTASTICOS.FacturaAutoparte(FacturaNumero, AutoparteId, Precio, Cantidad)
+SELECT
+	autoParteFactura.FACTURA_NRO,
+	autoParteTb.Codigo,
+	autoParteFactura.PRECIO_FACTURADO,
+	autoParteFactura.CANT_FACTURADA
+FROM (
+	SELECT
+		gm.FACTURA_NRO,
+		gm.AUTO_PARTE_CODIGO,
+		gm.PRECIO_FACTURADO,
+		gm.CANT_FACTURADA
+	FROM gd_esquema.Maestra gm
+	WHERE gm.FACTURA_FECHA IS NOT NULL AND gm.AUTO_PARTE_CODIGO IS NOT NULL
+) as autoParteFactura
+JOIN LOS_CUATRO_FANTASTICOS.Autoparte autoParteTb ON autoParteTb.Codigo = autoParteFactura.AUTO_PARTE_CODIGO;
+
 RAISERROR ('3 - Fin datos', 0, 1) WITH NOWAIT
 GO
+
 ------------------------------------------------------------
 --                                              FIN DATOS --
 ------------------------------------------------------------
