@@ -49,37 +49,13 @@ CREATE TABLE [LOS_CUATRO_FANTASTICOS].[Compra] (
 ) 
 GO
 
--- Creación tabla FacturaCliente
-CREATE TABLE [LOS_CUATRO_FANTASTICOS].[FacturaCliente] (
-	Id INT PRIMARY KEY IDENTITY(1,1),
-	Nombre NVARCHAR(255) NULL,
-	Apellido NVARCHAR(255) NULL,
-	Direccion NVARCHAR(255) NULL,
-	Dni DECIMAL(18,0) NULL,
-	Fecha_Nacimiento DATETIME2(3) NULL,
-	Mail NVARCHAR(255) NULL
-)
-GO
-
--- Creación tabla FacturaSucursal
-CREATE TABLE [LOS_CUATRO_FANTASTICOS].[FacturaSucursal] (
-	Id INT PRIMARY KEY IDENTITY(1,1),
-	Direccion NVARCHAR(255) NULL,
-	Mail NVARCHAR(255) NULL,
-	Telefono DECIMAL(18,0) NULL,
-	Ciudad NVARCHAR(255) NULL
-)
-GO
-
 -- Creación tabla Factura
 CREATE TABLE [LOS_CUATRO_FANTASTICOS].[Factura] (
 	Numero DECIMAL(18,0) PRIMARY KEY IDENTITY(1,1),
 	Fecha DATETIME2(3) NOT NULL,
 	Precio DECIMAL(18,2) NOT NULL,
 	ClienteId INT NOT NULL REFERENCES [LOS_CUATRO_FANTASTICOS].[Cliente],
-	FacturaClienteId INT NOT NULL REFERENCES [LOS_CUATRO_FANTASTICOS].[FacturaCliente],
 	SucursalId INT NOT NULL REFERENCES [LOS_CUATRO_FANTASTICOS].[Sucursal],
-	FacturaSucursalId INT NOT NULL REFERENCES [LOS_CUATRO_FANTASTICOS].[FacturaSucursal]
 )
 GO
 
@@ -174,6 +150,9 @@ CREATE TABLE [LOS_CUATRO_FANTASTICOS].[Modelo] (
 	Nombre  NVARCHAR(50) NULL,
 	Potencia  NVARCHAR(50) NULL,
 	FabricanteId INT NOT NULL,
+	TipoCajaId DECIMAL(18,0) NULL,
+	TipoMotorId DECIMAL(18,0) NULL,
+	TipoTransmisionId DECIMAL(18,0) NULL,
 )
 GO
 
@@ -212,6 +191,25 @@ GO
 ALTER TABLE [LOS_CUATRO_FANTASTICOS].[Modelo]
 ADD CONSTRAINT FK_Modelo_Fabricante FOREIGN KEY (FabricanteId)
 REFERENCES [LOS_CUATRO_FANTASTICOS].[Fabricante] (Id)
+GO
+
+--Creación clave forania de la tabla Modelo con tipo caja
+ALTER TABLE [LOS_CUATRO_FANTASTICOS].[Modelo]
+ADD CONSTRAINT FK_Modelo_Caja FOREIGN KEY (TipoCajaId)
+REFERENCES [LOS_CUATRO_FANTASTICOS].[Caja] (Codigo)
+GO
+
+
+--Creación clave forania de la tabla Modelo con tipo transmision
+ALTER TABLE [LOS_CUATRO_FANTASTICOS].[Modelo]
+ADD CONSTRAINT FK_Modelo_Transmision FOREIGN KEY (TipoTransmisionId)
+REFERENCES [LOS_CUATRO_FANTASTICOS].[Transmision] (Codigo)
+GO
+
+--Creación clave forania de la tabla Modelo con tipo motor
+ALTER TABLE [LOS_CUATRO_FANTASTICOS].[Modelo]
+ADD CONSTRAINT FK_Modelo_Motor FOREIGN KEY (TipoMotorId)
+REFERENCES [LOS_CUATRO_FANTASTICOS].[Motor] (Codigo)
 GO
 
 --Creación clave forania de la tabla AutoParte con  Modelo
@@ -267,43 +265,20 @@ INSERT INTO [LOS_CUATRO_FANTASTICOS].[Fabricante] (Nombre)
 	ORDER BY [FABRICANTE_NOMBRE] 
 GO
 
--- Inserto datos de Modelo
-INSERT INTO [LOS_CUATRO_FANTASTICOS].[Modelo] (Codigo, Nombre, Potencia, FabricanteId)
-	SELECT 
-		[MODELO_CODIGO],
-		[MODELO_NOMBRE],
-		[MODELO_POTENCIA],
-		fabricante.Id
-	FROM gd_esquema.Maestra as maestra
-	JOIN [LOS_CUATRO_FANTASTICOS].[Fabricante] as fabricante on maestra.FABRICANTE_NOMBRE = fabricante.Nombre
-	GROUP BY 
-		[MODELO_CODIGO],
-		[MODELO_NOMBRE],
-		[MODELO_POTENCIA],
-		fabricante.Id
-GO
-
----Inserto datos de TipoAuto
-INSERT INTO [LOS_CUATRO_FANTASTICOS].[TipoAuto]([Codigo] ,[Descripcion])
-	SELECT DISTINCT TIPO_AUTO_CODIGO, TIPO_AUTO_DESC
-	FROM [GD2C2020].[gd_esquema].[Maestra]
-	WHERE TIPO_AUTO_CODIGO is not null and TIPO_AUTO_DESC is not null
-
-GO
 
 ---Inserto datos de Tipo Transmision
-INSERT INTO [LOS_CUATRO_FANTASTICOS].[Caja]([Codigo] ,[Descripcion])
+INSERT INTO [LOS_CUATRO_FANTASTICOS].[Transmision]([Codigo] ,[Descripcion])
 	SELECT DISTINCT [TIPO_TRANSMISION_CODIGO], [TIPO_TRANSMISION_DESC]
 	FROM [GD2C2020].[gd_esquema].[Maestra]
-	WHERE [TIPO_TRANSMISION_CODIGO] IS NOT NULL AND [TIPO_TRANSMISION_DESC] IS NOT NULL
+	WHERE [TIPO_TRANSMISION_CODIGO] IS NOT NULL
 
 GO
 
 ---Inserto datos de Tipo Caja
-INSERT INTO [LOS_CUATRO_FANTASTICOS].[Transmision]([Codigo] ,[Descripcion])
+INSERT INTO [LOS_CUATRO_FANTASTICOS].[Caja]([Codigo] ,[Descripcion])
 	SELECT DISTINCT TIPO_CAJA_CODIGO, TIPO_CAJA_DESC
 	FROM [GD2C2020].[gd_esquema].[Maestra]
-	WHERE TIPO_CAJA_CODIGO IS NOT NULL AND TIPO_CAJA_DESC IS NOT NULL
+	WHERE TIPO_CAJA_CODIGO IS NOT NULL 
 
 GO
 
@@ -315,6 +290,30 @@ INSERT INTO [LOS_CUATRO_FANTASTICOS].[Motor]([Codigo] ,[Descripcion])
 
 GO
 
+-- Inserto datos de Modelo
+INSERT INTO [LOS_CUATRO_FANTASTICOS].[Modelo] (Codigo, Nombre, Potencia, FabricanteId, [TipoCajaId], [TipoMotorId], [TipoTransmisionId])
+	 select m.MODELO_CODIGO, m.MODELO_NOMBRE, m.MODELO_POTENCIA, f.Id, m.TIPO_CAJA_CODIGO, m.TIPO_MOTOR_CODIGO, m.TIPO_TRANSMISION_CODIGO
+  FROM [GD2C2020].[gd_esquema].[Maestra] m
+  INNER JOIN [LOS_CUATRO_FANTASTICOS].[Fabricante] f on m.FABRICANTE_NOMBRE = f.[Nombre]
+  INNER JOIN [LOS_CUATRO_FANTASTICOS].[Caja] c on m.TIPO_CAJA_CODIGO = c.[Codigo]
+  INNER JOIN [LOS_CUATRO_FANTASTICOS].[Motor] mo on m.TIPO_MOTOR_CODIGO = mo.[Codigo]
+  INNER JOIN [LOS_CUATRO_FANTASTICOS].[Transmision] t on m.TIPO_TRANSMISION_CODIGO = t.[Codigo]
+  GROUP BY 
+		m.[MODELO_CODIGO],
+		m.[MODELO_NOMBRE],
+		m.[MODELO_POTENCIA],
+		f.Id,m.TIPO_CAJA_CODIGO, m.TIPO_MOTOR_CODIGO, m.TIPO_TRANSMISION_CODIGO
+
+order by m.MODELO_CODIGO 
+GO
+
+---Inserto datos de TipoAuto
+INSERT INTO [LOS_CUATRO_FANTASTICOS].[TipoAuto]([Codigo] ,[Descripcion])
+	SELECT DISTINCT TIPO_AUTO_CODIGO, TIPO_AUTO_DESC
+	FROM [GD2C2020].[gd_esquema].[Maestra]
+	WHERE TIPO_AUTO_CODIGO is not null and TIPO_AUTO_DESC is not null
+
+GO
 
 ---Inserto datos de Cliente
 INSERT INTO [LOS_CUATRO_FANTASTICOS].[Cliente]
@@ -325,14 +324,38 @@ INSERT INTO [LOS_CUATRO_FANTASTICOS].[Cliente]
            ,[Fecha_Nacimiento]
            ,[Mail])
 
-	 SELECT CLIENTE_NOMBRE, CLIENTE_APELLIDO,CLIENTE_DIRECCION, CLIENTE_DNI, CLIENTE_FECHA_NAC, CLIENTE_MAIL 
-	 FROM [GD2C2020].[gd_esquema].[Maestra]
-	 WHERE CLIENTE_DNI IS NOT NULL 
-		AND CLIENTE_FECHA_NAC IS NOT NULL
-		AND CLIENTE_MAIL IS NOT NULL 
-		AND  CLIENTE_NOMBRE IS NOT NULL
-		AND CLIENTE_APELLIDO IS NOT NULL 
-		AND CLIENTE_DIRECCION IS NOT NULL
+	 SELECT * FROM (
+		SELECT Apellido = [FAC_CLIENTE_APELLIDO]
+			  ,Nombre = [FAC_CLIENTE_NOMBRE]
+			  ,Direccion = [FAC_CLIENTE_DIRECCION]
+			  ,Dni = [FAC_CLIENTE_DNI]
+			  ,Fecha_Nacimiento = [FAC_CLIENTE_FECHA_NAC]
+			  ,Mail = [FAC_CLIENTE_MAIL]
+		  FROM [GD2C2020].[gd_esquema].[Maestra]
+		  WHERE FACTURA_NRO IS NOT NULL
+		  GROUP BY [FAC_CLIENTE_APELLIDO]
+			  ,[FAC_CLIENTE_NOMBRE]
+			  ,[FAC_CLIENTE_DIRECCION]
+			  ,[FAC_CLIENTE_DNI]
+			  ,[FAC_CLIENTE_FECHA_NAC]
+			  ,[FAC_CLIENTE_MAIL]
+			UNION
+		SELECT Apellido = [CLIENTE_APELLIDO]
+			  ,Nombre = [CLIENTE_NOMBRE]
+			  ,Direccion = [CLIENTE_DIRECCION]
+			  ,Dni = [CLIENTE_DNI]
+			  ,Fecha_Nacimiento = [CLIENTE_FECHA_NAC]
+			  ,Mail = [CLIENTE_MAIL]
+		  FROM [GD2C2020].[gd_esquema].[Maestra]
+		  WHERE FACTURA_NRO IS NOT NULL 
+		  GROUP BY 
+			   [CLIENTE_APELLIDO]
+			  ,[CLIENTE_NOMBRE]
+			  ,[CLIENTE_DIRECCION]
+			  ,[CLIENTE_DNI]
+			  ,[CLIENTE_FECHA_NAC]
+			  ,[CLIENTE_MAIL]) as clis
+		WHERE Apellido IS NOT NULL
 
 GO
 
@@ -355,77 +378,54 @@ FROM gd_esquema.Maestra
 WHERE AUTO_PARTE_CODIGO IS NOT NULL
 GO
 
---Inserto datos FacturaCliente
-INSERT INTO [LOS_CUATRO_FANTASTICOS].[FacturaCliente] (Nombre, Apellido, Direccion, Dni, Fecha_Nacimiento, Mail)
-SELECT 
-	[FAC_CLIENTE_APELLIDO],
-	[FAC_CLIENTE_NOMBRE],
-	[FAC_CLIENTE_DIRECCION],
-	[FAC_CLIENTE_DNI],
-	[FAC_CLIENTE_FECHA_NAC],
-	[FAC_CLIENTE_MAIL]
-FROM [gd_esquema].[Maestra]
-WHERE [FACTURA_NRO] IS NOT NULL AND [AUTO_PARTE_CODIGO] IS NULL
-UNION 
-SELECT DISTINCT
-	[FAC_CLIENTE_APELLIDO],
-	[FAC_CLIENTE_NOMBRE],
-	[FAC_CLIENTE_DIRECCION],
-	[FAC_CLIENTE_DNI],
-	[FAC_CLIENTE_FECHA_NAC],
-	[FAC_CLIENTE_MAIL]
-FROM [gd_esquema].[Maestra]
-WHERE [FACTURA_NRO] IS NOT NULL AND [AUTO_PARTE_CODIGO] IS NOT NULL 
-
--- Insert datos FacturaSucursal
-INSERT INTO [LOS_CUATRO_FANTASTICOS].[FacturaSucursal] (Direccion, Mail, Telefono, Ciudad)
+-- Inserto datos Factura
+SET IDENTITY_INSERT [LOS_CUATRO_FANTASTICOS].[Factura] ON
+INSERT INTO [LOS_CUATRO_FANTASTICOS].[Factura] (
+	Numero, 
+	Fecha, 
+	Precio, 
+	ClienteId,
+	SucursalId
+	)
 	SELECT 
-		[FAC_SUCURSAL_DIRECCION],
-		[FAC_SUCURSAL_MAIL],
-		[FAC_SUCURSAL_TELEFONO],
-		[FAC_SUCURSAL_CIUDAD]
-	FROM [gd_esquema].[Maestra]
-	WHERE [FACTURA_NRO] IS NOT NULL AND [AUTO_PARTE_CODIGO] IS NULL
-GO
-
- INSERT INTO [LOS_CUATRO_FANTASTICOS].[FacturaSucursal] (Direccion, Mail, Telefono, Ciudad)
-	(SELECT
-		[FAC_SUCURSAL_DIRECCION],
-		[FAC_SUCURSAL_MAIL],
-		[FAC_SUCURSAL_TELEFONO],
-		[FAC_SUCURSAL_CIUDAD]
-	FROM [gd_esquema].[Maestra]
-	WHERE [FACTURA_NRO] IS NOT NULL AND [AUTO_PARTE_CODIGO] IS NOT NULL 
+		Numero = maestra.FACTURA_NRO
+		,Fecha = maestra.FACTURA_FECHA
+		,Precio = SUM(maestra.PRECIO_FACTURADO)
+		,ClienteId = (
+			SELECT Id 
+			FROM [LOS_CUATRO_FANTASTICOS].[Cliente] as c
+			WHERE FAC_CLIENTE_APELLIDO = c.Apellido 
+				AND FAC_CLIENTE_DIRECCION = c.Direccion 
+				AND FAC_CLIENTE_DNI = c.Dni 
+				AND FAC_CLIENTE_FECHA_NAC = c.Fecha_Nacimiento 
+				AND FAC_CLIENTE_MAIL = c.Mail 
+				AND FAC_CLIENTE_NOMBRE = c.Nombre)
+		,SucursalId = (
+			SELECT Id 
+			FROM [LOS_CUATRO_FANTASTICOS].[Sucursal] as s
+			WHERE FAC_SUCURSAL_CIUDAD = s.Ciudad
+				AND FAC_SUCURSAL_DIRECCION = s.Direccion
+				AND FAC_SUCURSAL_MAIL = s.Mail
+				AND FAC_SUCURSAL_TELEFONO = s.Telefono
+		)
+	FROM gd_esquema.Maestra as maestra
+	WHERE FACTURA_NRO IS NOT NULL -- 57930 facturas
 	GROUP BY 
-		[FAC_CLIENTE_APELLIDO],
-		[FAC_CLIENTE_NOMBRE],
-		[FAC_CLIENTE_DIRECCION],
-		[FAC_CLIENTE_DNI],
-		[FAC_CLIENTE_FECHA_NAC],
-		[FAC_CLIENTE_MAIL],
-		[FAC_SUCURSAL_DIRECCION],
-		[FAC_SUCURSAL_MAIL],
-		[FAC_SUCURSAL_TELEFONO],
-		[FAC_SUCURSAL_CIUDAD])
-GO
+		[FACTURA_NRO]
+		,[FACTURA_FECHA]
+		,[FAC_CLIENTE_APELLIDO]
+		,[FAC_CLIENTE_NOMBRE]
+		,[FAC_CLIENTE_DIRECCION]
+		,[FAC_CLIENTE_DNI]
+		,[FAC_CLIENTE_FECHA_NAC]
+		,[FAC_CLIENTE_MAIL]
+		,[FAC_SUCURSAL_CIUDAD]
+		,[FAC_SUCURSAL_DIRECCION]
+		,[FAC_SUCURSAL_MAIL]
+		,[FAC_SUCURSAL_TELEFONO]
 
--- Insert datos Factura
---SET IDENTITY_INSERT [LOS_CUATRO_FANTASTICOS].[Factura] ON
---INSERT INTO [LOS_CUATRO_FANTASTICOS].[Factura] (Numero, Fecha, Precio, ClienteId, FacturaClienteId, SucursalId, FacturaSucursalId)
---	SELECT 
---		Numero = maestra.FACTURA_NRO
---		,Fecha = maestra.FACTURA_FECHA
---		,Precio = SUM(maestra.PRECIO_FACTURADO)
---		,1
---		,1
---		,1
---		,1
---	FROM gd_esquema.Maestra as maestra
---	WHERE FACTURA_NRO IS NOT NULL -- 57930 facturas
---	GROUP BY 
---		FACTURA_NRO,
---		FACTURA_FECHA
---SET IDENTITY_INSERT [LOS_CUATRO_FANTASTICOS].[Factura] OFF
+
+SET IDENTITY_INSERT [LOS_CUATRO_FANTASTICOS].[Factura] OFF
 
 
 
