@@ -458,44 +458,98 @@ INSERT INTO [LOS_CUATRO_FANTASTICOS].[Factura] (
 	SucursalId
 	)
 	SELECT 
-		Numero = maestra.FACTURA_NRO
-		,Fecha = maestra.FACTURA_FECHA
-		,Precio = SUM(maestra.PRECIO_FACTURADO)
-		,ClienteId = (
-			SELECT Id 
-			FROM [LOS_CUATRO_FANTASTICOS].[Cliente] as c
-			WHERE FAC_CLIENTE_APELLIDO = c.Apellido 
-				AND FAC_CLIENTE_DIRECCION = c.Direccion 
-				AND FAC_CLIENTE_DNI = c.Dni 
-				AND FAC_CLIENTE_FECHA_NAC = c.Fecha_Nacimiento 
-				AND FAC_CLIENTE_MAIL = c.Mail 
-				AND FAC_CLIENTE_NOMBRE = c.Nombre)
-		,SucursalId = (
-			SELECT Id 
-			FROM [LOS_CUATRO_FANTASTICOS].[Sucursal] as s
-			WHERE FAC_SUCURSAL_CIUDAD = s.Ciudad
-				AND FAC_SUCURSAL_DIRECCION = s.Direccion
-				AND FAC_SUCURSAL_MAIL = s.Mail
-				AND FAC_SUCURSAL_TELEFONO = s.Telefono
-		)
-	FROM gd_esquema.Maestra as maestra
-	WHERE FACTURA_NRO IS NOT NULL -- 57930 facturas
-	GROUP BY 
-		[FACTURA_NRO]
-		,[FACTURA_FECHA]
-		,[FAC_CLIENTE_APELLIDO]
-		,[FAC_CLIENTE_NOMBRE]
-		,[FAC_CLIENTE_DIRECCION]
-		,[FAC_CLIENTE_DNI]
-		,[FAC_CLIENTE_FECHA_NAC]
-		,[FAC_CLIENTE_MAIL]
-		,[FAC_SUCURSAL_CIUDAD]
-		,[FAC_SUCURSAL_DIRECCION]
-		,[FAC_SUCURSAL_MAIL]
-		,[FAC_SUCURSAL_TELEFONO]
+		Numero
+		,Fecha
+		,Precio
+		,ClienteId = c.Id
+		,SucursalId 
+	FROM (
+		SELECT 
+			Numero = maestra.FACTURA_NRO
+			,Fecha = maestra.FACTURA_FECHA
+			,Precio = SUM(maestra.PRECIO_FACTURADO)
+			,maestra.[FAC_CLIENTE_APELLIDO]
+			,maestra.[FAC_CLIENTE_NOMBRE]
+			,maestra.[FAC_CLIENTE_DIRECCION]
+			,maestra.[FAC_CLIENTE_DNI]
+			,maestra.[FAC_CLIENTE_FECHA_NAC]
+			,maestra.[FAC_CLIENTE_MAIL]
+			,SucursalId = (
+				SELECT Id 
+				FROM [LOS_CUATRO_FANTASTICOS].[Sucursal] as s
+				WHERE FAC_SUCURSAL_CIUDAD = s.Ciudad
+					AND FAC_SUCURSAL_DIRECCION = s.Direccion
+					AND FAC_SUCURSAL_MAIL = s.Mail
+					AND FAC_SUCURSAL_TELEFONO = s.Telefono
+			)
+		FROM gd_esquema.Maestra as maestra
+		WHERE FACTURA_NRO IS NOT NULL -- 57930 facturas
+		GROUP BY 
+			[FACTURA_NRO]
+			,[FACTURA_FECHA]
+			,[FAC_CLIENTE_APELLIDO]
+			,[FAC_CLIENTE_NOMBRE]
+			,[FAC_CLIENTE_DIRECCION]
+			,[FAC_CLIENTE_DNI]
+			,[FAC_CLIENTE_FECHA_NAC]
+			,[FAC_CLIENTE_MAIL]
+			,[FAC_SUCURSAL_CIUDAD]
+			,[FAC_SUCURSAL_DIRECCION]
+			,[FAC_SUCURSAL_MAIL]
+			,[FAC_SUCURSAL_TELEFONO]) as sarasa
+	JOIN [LOS_CUATRO_FANTASTICOS].[Cliente] as c on sarasa.FAC_CLIENTE_DNI = c.Dni AND sarasa.FAC_CLIENTE_FECHA_NAC = c.Fecha_Nacimiento
 
 
 SET IDENTITY_INSERT [LOS_CUATRO_FANTASTICOS].[Factura] OFF
+
+RAISERROR ('3 - Insertando Compra', 0, 1) WITH NOWAIT
+GO
+SET IDENTITY_INSERT [LOS_CUATRO_FANTASTICOS].[Compra] ON
+
+INSERT INTO LOS_CUATRO_FANTASTICOS.Compra(Numero, Fecha, Precio, ClienteId, SucursalId)
+SELECT 
+	Numero
+	,Fecha
+	,Precio
+	,ClienteId = c.Id
+	,SucursalId 
+FROM (
+	SELECT 
+		Numero = maestra.COMPRA_NRO
+		,Fecha = maestra.COMPRA_FECHA
+		,Precio = SUM(maestra.COMPRA_PRECIO)
+		,maestra.[CLIENTE_APELLIDO]
+		,maestra.[CLIENTE_NOMBRE]
+		,maestra.[CLIENTE_DIRECCION]
+		,maestra.[CLIENTE_DNI]
+		,maestra.[CLIENTE_FECHA_NAC]
+		,maestra.[CLIENTE_MAIL]
+		,SucursalId = (
+			SELECT Id 
+			FROM [LOS_CUATRO_FANTASTICOS].[Sucursal] as s
+			WHERE SUCURSAL_CIUDAD = s.Ciudad
+				AND SUCURSAL_DIRECCION = s.Direccion
+				AND SUCURSAL_MAIL = s.Mail
+				AND SUCURSAL_TELEFONO = s.Telefono
+		)
+	FROM gd_esquema.Maestra as maestra
+	WHERE COMPRA_NRO IS NOT NULL -- 57930 facturas
+	GROUP BY 
+		[COMPRA_NRO]
+		,[COMPRA_FECHA]
+		,[CLIENTE_APELLIDO]
+		,[CLIENTE_NOMBRE]
+		,[CLIENTE_DIRECCION]
+		,[CLIENTE_DNI]
+		,[CLIENTE_FECHA_NAC]
+		,[CLIENTE_MAIL]
+		,[SUCURSAL_CIUDAD]
+		,[SUCURSAL_DIRECCION]
+		,[SUCURSAL_MAIL]
+		,[SUCURSAL_TELEFONO]) as sarasa
+JOIN [LOS_CUATRO_FANTASTICOS].[Cliente] as c on sarasa.CLIENTE_DNI = c.Dni AND sarasa.CLIENTE_FECHA_NAC = c.Fecha_Nacimiento
+
+SET IDENTITY_INSERT [LOS_CUATRO_FANTASTICOS].[Compra] OFF
 
 -- INSERT datos Compra Auto
 INSERT INTO LOS_CUATRO_FANTASTICOS.CompraAuto(CompraNumero, AutoId, Precio)
