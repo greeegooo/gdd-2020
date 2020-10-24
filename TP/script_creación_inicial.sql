@@ -386,8 +386,8 @@ SELECT DISTINCT
 	,AUTO_PATENTE
 	,AUTO_FECHA_ALTA
 	,AUTO_CANT_KMS
-	,MODELO_CODIGO
 	,TIPO_AUTO_CODIGO
+	,MODELO_CODIGO
 FROM [gd_esquema].[Maestra] as ma
 JOIN [LOS_CUATRO_FANTASTICOS].[Modelo] as mo on ma.MODELO_CODIGO = mo.Codigo
 JOIN [LOS_CUATRO_FANTASTICOS].TipoAuto as ta on ma.TIPO_AUTO_CODIGO = ta.Codigo
@@ -398,8 +398,8 @@ RAISERROR ('3 - Insertando Cliente', 0, 1) WITH NOWAIT
 GO
 ---Inserto datos de Cliente
 INSERT INTO [LOS_CUATRO_FANTASTICOS].[Cliente]
-           ([Nombre]
-           ,[Apellido]
+           ([Apellido]
+		   ,[Nombre]
            ,[Direccion]
            ,[Dni]
            ,[Fecha_Nacimiento]
@@ -566,19 +566,26 @@ SET IDENTITY_INSERT [LOS_CUATRO_FANTASTICOS].[Compra] OFF
 
 -- INSERT datos Compra Auto
 INSERT INTO LOS_CUATRO_FANTASTICOS.CompraAuto(CompraNumero, AutoId, Precio)
+--SELECT 
+--	compraMaestra.COMPRA_NRO, 
+--	autoTb.Id,
+--	compraMaestra.COMPRA_PRECIO
+--FROM (
+--	SELECT 
+--		gm.COMPRA_NRO,
+--		gm.COMPRA_PRECIO,
+--		gm.AUTO_PATENTE
+--	FROM gd_esquema.Maestra gm
+--	WHERE gm.AUTO_PARTE_CODIGO IS NULL AND gm.COMPRA_NRO IS NOT NULL
+--) as compraMaestra
+--JOIN LOS_CUATRO_FANTASTICOS.Auto autoTb ON autoTb.Patente = compraMaestra.AUTO_PATENTE
 SELECT 
-	compraMaestra.COMPRA_NRO, 
-	autoTb.Id,
-	compraMaestra.COMPRA_PRECIO
-FROM (
-	SELECT 
-		gm.COMPRA_NRO,
-		gm.COMPRA_PRECIO,
-		gm.AUTO_PATENTE
-	FROM gd_esquema.Maestra gm
-	WHERE gm.AUTO_PARTE_CODIGO IS NULL AND gm.COMPRA_NRO IS NOT NULL
-) as compraMaestra
-JOIN LOS_CUATRO_FANTASTICOS.Auto autoTb ON autoTb.Patente = compraMaestra.AUTO_PATENTE
+	m.COMPRA_NRO, 
+	autoTabla.Id,
+	m.COMPRA_PRECIO
+FROM [gd_esquema].[Maestra] as m
+JOIN [LOS_CUATRO_FANTASTICOS].[Auto] as autoTabla on m.AUTO_NRO_CHASIS = autoTabla.Chasis AND m.AUTO_NRO_MOTOR = autoTabla.Motor AND m.AUTO_PATENTE = autoTabla.Patente
+JOIN [LOS_CUATRO_FANTASTICOS].[Compra] as compra on m.COMPRA_NRO = compra.Numero
 
 -- INSERT datos Compra AutoParte
 INSERT INTO LOS_CUATRO_FANTASTICOS.CompraAutoparte(CompraNumero, AutoparteId, Precio, Cantidad)
