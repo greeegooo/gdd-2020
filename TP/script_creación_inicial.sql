@@ -1,14 +1,18 @@
 USE [GD2C2020]
 GO
 
+RAISERROR ('Iniciando migración', 0, 1) WITH NOWAIT
+GO
 ------------------------------------------------------------
 --                                                ESQUEMA --
 ------------------------------------------------------------
 
+RAISERROR ('0 - Creando schema', 0, 1) WITH NOWAIT
+GO
+
 -- Creación de esquema 
 CREATE SCHEMA [LOS_CUATRO_FANTASTICOS]
 GO
-
 ------------------------------------------------------------
 --                                            FIN ESQUEMA --
 ------------------------------------------------------------
@@ -16,6 +20,12 @@ GO
 ------------------------------------------------------------
 --                                                 TABLAS --
 ------------------------------------------------------------
+
+RAISERROR ('1 - Creando tablas', 0, 1) WITH NOWAIT
+GO
+
+RAISERROR ('1.1 - Creando Cliente', 0, 1) WITH NOWAIT
+GO
 
 -- Creación tabla Cliente
 CREATE TABLE [LOS_CUATRO_FANTASTICOS].[Cliente] (
@@ -29,6 +39,8 @@ CREATE TABLE [LOS_CUATRO_FANTASTICOS].[Cliente] (
 )
 GO
 
+RAISERROR ('1.2 - Creando Sucursal', 0, 1) WITH NOWAIT
+GO
 -- Creación tabla Sucursal
 CREATE TABLE [LOS_CUATRO_FANTASTICOS].[Sucursal] (
 	Id INT PRIMARY KEY IDENTITY(1,1),
@@ -39,6 +51,8 @@ CREATE TABLE [LOS_CUATRO_FANTASTICOS].[Sucursal] (
 )
 GO
 
+RAISERROR ('1.3 - Creando Compra', 0, 1) WITH NOWAIT
+GO
 -- Creación tabla Compra
 CREATE TABLE [LOS_CUATRO_FANTASTICOS].[Compra] (
 	Numero DECIMAL(18,0) PRIMARY KEY IDENTITY(1,1),
@@ -49,6 +63,8 @@ CREATE TABLE [LOS_CUATRO_FANTASTICOS].[Compra] (
 ) 
 GO
 
+RAISERROR ('1.4 - Creando Factura', 0, 1) WITH NOWAIT
+GO
 -- Creación tabla Factura
 CREATE TABLE [LOS_CUATRO_FANTASTICOS].[Factura] (
 	Numero DECIMAL(18,0) PRIMARY KEY IDENTITY(1,1),
@@ -59,6 +75,8 @@ CREATE TABLE [LOS_CUATRO_FANTASTICOS].[Factura] (
 )
 GO
 
+RAISERROR ('1.5 - Creando Cliente', 0, 1) WITH NOWAIT
+GO
 --Creación tabla Auto
 CREATE TABLE [LOS_CUATRO_FANTASTICOS].[Auto] (
 	Id INT PRIMARY KEY,
@@ -72,6 +90,8 @@ CREATE TABLE [LOS_CUATRO_FANTASTICOS].[Auto] (
 )
 GO
 
+RAISERROR ('1.6 - Creando Autoparte', 0, 1) WITH NOWAIT
+GO
 --Creación tabla Autoparte
 CREATE TABLE [LOS_CUATRO_FANTASTICOS].[Autoparte] (
 	Codigo DECIMAL(18,0) PRIMARY KEY,
@@ -81,6 +101,8 @@ CREATE TABLE [LOS_CUATRO_FANTASTICOS].[Autoparte] (
 )
 GO
 
+RAISERROR ('1.7 - Creando CompraAuto', 0, 1) WITH NOWAIT
+GO
 -- Creación tabla CompraAuto
 CREATE TABLE [LOS_CUATRO_FANTASTICOS].[CompraAuto] (
 	CompraNumero DECIMAL(18,0) REFERENCES [LOS_CUATRO_FANTASTICOS].[Compra],
@@ -90,6 +112,8 @@ CREATE TABLE [LOS_CUATRO_FANTASTICOS].[CompraAuto] (
 )
 GO
 
+RAISERROR ('1.8 - Creando CompraAutoparte', 0, 1) WITH NOWAIT
+GO
 -- Creación tabla CompraAutoparte
 CREATE TABLE [LOS_CUATRO_FANTASTICOS].[CompraAutoparte] (
 	CompraNumero DECIMAL(18,0) REFERENCES [LOS_CUATRO_FANTASTICOS].[Compra],
@@ -100,6 +124,8 @@ CREATE TABLE [LOS_CUATRO_FANTASTICOS].[CompraAutoparte] (
 )
 GO
 
+RAISERROR ('1.9 - Creando TipoAuto', 0, 1) WITH NOWAIT
+GO
 --Creación tabla TipoAuto
 CREATE TABLE [LOS_CUATRO_FANTASTICOS].[TipoAuto] (
 	Codigo DECIMAL(18,0) PRIMARY KEY,
@@ -107,6 +133,8 @@ CREATE TABLE [LOS_CUATRO_FANTASTICOS].[TipoAuto] (
 )
 GO
 
+RAISERROR ('1.10 - Creando Caja', 0, 1) WITH NOWAIT
+GO
 --Creación tabla Caja
 CREATE TABLE [LOS_CUATRO_FANTASTICOS].[Caja] (
 	Codigo DECIMAL(18,0) PRIMARY KEY,
@@ -114,7 +142,8 @@ CREATE TABLE [LOS_CUATRO_FANTASTICOS].[Caja] (
 )
 GO
 
-
+RAISERROR ('1.11 - Creando Transmision', 0, 1) WITH NOWAIT
+GO
 --Creación tabla Transmision
 CREATE TABLE [LOS_CUATRO_FANTASTICOS].[Transmision] (
 	Codigo DECIMAL(18,0) PRIMARY KEY,
@@ -122,7 +151,8 @@ CREATE TABLE [LOS_CUATRO_FANTASTICOS].[Transmision] (
 )
 GO
 
-
+RAISERROR ('1.12 - Creando Motor', 0, 1) WITH NOWAIT
+GO
 --Creación tabla Motor
 CREATE TABLE [LOS_CUATRO_FANTASTICOS].[Motor] (
 	Codigo DECIMAL(18,0) PRIMARY KEY,
@@ -130,6 +160,8 @@ CREATE TABLE [LOS_CUATRO_FANTASTICOS].[Motor] (
 )
 GO
 
+RAISERROR ('1.13 - Creando CatagoriaAutoparte', 0, 1) WITH NOWAIT
+GO
 --Creación tabla CategoriaAutoparte
 CREATE TABLE [LOS_CUATRO_FANTASTICOS].[CategoriaAutoparte] (
 	Codigo DECIMAL(18,0) PRIMARY KEY,
@@ -137,6 +169,8 @@ CREATE TABLE [LOS_CUATRO_FANTASTICOS].[CategoriaAutoparte] (
 )
 GO
 
+RAISERROR ('1.14 - Creando Fabricante', 0, 1) WITH NOWAIT
+GO
 --Creación tabla Fabricante
 CREATE TABLE [LOS_CUATRO_FANTASTICOS].[Fabricante] (
 	Id INT PRIMARY KEY IDENTITY(1,1),
@@ -144,6 +178,8 @@ CREATE TABLE [LOS_CUATRO_FANTASTICOS].[Fabricante] (
 )
 GO
 
+RAISERROR ('1.15 - Creando Modelo', 0, 1) WITH NOWAIT
+GO
 --Creación tabla Modelo
 CREATE TABLE [LOS_CUATRO_FANTASTICOS].[Modelo] (
 	Codigo DECIMAL(18,0) PRIMARY KEY,
@@ -156,6 +192,8 @@ CREATE TABLE [LOS_CUATRO_FANTASTICOS].[Modelo] (
 )
 GO
 
+RAISERROR ('1.16 - Creando FacturaAuto', 0, 1) WITH NOWAIT
+GO
 --Creación tabla FacturaAuto
 CREATE TABLE [LOS_CUATRO_FANTASTICOS].[FacturaAuto] (
 	FacturaNumero DECIMAL(18,0) REFERENCES [LOS_CUATRO_FANTASTICOS].[Factura],
@@ -165,6 +203,8 @@ CREATE TABLE [LOS_CUATRO_FANTASTICOS].[FacturaAuto] (
 )
 GO
 
+RAISERROR ('1.17 - Creando FacturaAutoparte', 0, 1) WITH NOWAIT
+GO
 --Creación tabla FacturaAutoparte
 CREATE TABLE [LOS_CUATRO_FANTASTICOS].[FacturaAutoparte] (
 	FacturaNumero DECIMAL(18,0) REFERENCES [LOS_CUATRO_FANTASTICOS].[Factura],
@@ -173,6 +213,12 @@ CREATE TABLE [LOS_CUATRO_FANTASTICOS].[FacturaAutoparte] (
 	Precio  DECIMAL(18,2) NOT NULL,
 	CONSTRAINT PK_FacturaAutoparte PRIMARY KEY(FacturaNumero, AutoparteId)
 )
+GO
+
+RAISERROR ('1 - Fin Tablas', 0, 1) WITH NOWAIT
+GO
+
+RAISERROR ('2 - Creando de Constrains e Indices', 0, 1) WITH NOWAIT
 GO
 
 --Creación clave forania de la tabla Auto con  TIPOAUTO
@@ -224,6 +270,8 @@ ADD CONSTRAINT FK_AutoParte_CategoriaAutoparte FOREIGN KEY (Categoria)
 REFERENCES [LOS_CUATRO_FANTASTICOS].[CategoriaAutoparte] (Codigo)
 GO
 
+RAISERROR ('2 - Fin Constrains e Indices', 0, 1) WITH NOWAIT
+GO
 ------------------------------------------------------------
 --                                             FIN TABLAS --
 ------------------------------------------------------------
@@ -256,6 +304,11 @@ GO
 --                                                  DATOS --
 ------------------------------------------------------------
 
+RAISERROR ('3 - Insertando Datos', 0, 1) WITH NOWAIT
+GO
+
+RAISERROR ('3.1 - Insertando Fabricante', 0, 1) WITH NOWAIT
+GO
 -- Inserto datos de Fabricante
 INSERT INTO [LOS_CUATRO_FANTASTICOS].[Fabricante] (Nombre)
 	SELECT 
@@ -265,7 +318,8 @@ INSERT INTO [LOS_CUATRO_FANTASTICOS].[Fabricante] (Nombre)
 	ORDER BY [FABRICANTE_NOMBRE] 
 GO
 
-
+RAISERROR ('3 - Insertando Transmision', 0, 1) WITH NOWAIT
+GO
 ---Inserto datos de Tipo Transmision
 INSERT INTO [LOS_CUATRO_FANTASTICOS].[Transmision]([Codigo] ,[Descripcion])
 	SELECT DISTINCT [TIPO_TRANSMISION_CODIGO], [TIPO_TRANSMISION_DESC]
@@ -274,6 +328,8 @@ INSERT INTO [LOS_CUATRO_FANTASTICOS].[Transmision]([Codigo] ,[Descripcion])
 
 GO
 
+RAISERROR ('3 - Insertando Caja', 0, 1) WITH NOWAIT
+GO
 ---Inserto datos de Tipo Caja
 INSERT INTO [LOS_CUATRO_FANTASTICOS].[Caja]([Codigo] ,[Descripcion])
 	SELECT DISTINCT TIPO_CAJA_CODIGO, TIPO_CAJA_DESC
@@ -282,6 +338,8 @@ INSERT INTO [LOS_CUATRO_FANTASTICOS].[Caja]([Codigo] ,[Descripcion])
 
 GO
 
+RAISERROR ('3 - Insertando Motor', 0, 1) WITH NOWAIT
+GO
 ---Inserto datos de Tipo Motor
 INSERT INTO [LOS_CUATRO_FANTASTICOS].[Motor]([Codigo] ,[Descripcion])
 	SELECT DISTINCT TIPO_MOTOR_CODIGO, NULL
@@ -290,6 +348,8 @@ INSERT INTO [LOS_CUATRO_FANTASTICOS].[Motor]([Codigo] ,[Descripcion])
 
 GO
 
+RAISERROR ('3 - Insertando Modelo', 0, 1) WITH NOWAIT
+GO
 -- Inserto datos de Modelo
 INSERT INTO [LOS_CUATRO_FANTASTICOS].[Modelo] (Codigo, Nombre, Potencia, FabricanteId, [TipoCajaId], [TipoMotorId], [TipoTransmisionId])
 	 select m.MODELO_CODIGO, m.MODELO_NOMBRE, m.MODELO_POTENCIA, f.Id, m.TIPO_CAJA_CODIGO, m.TIPO_MOTOR_CODIGO, m.TIPO_TRANSMISION_CODIGO
@@ -307,6 +367,8 @@ INSERT INTO [LOS_CUATRO_FANTASTICOS].[Modelo] (Codigo, Nombre, Potencia, Fabrica
 order by m.MODELO_CODIGO 
 GO
 
+RAISERROR ('3 - Insertando TipoAuto', 0, 1) WITH NOWAIT
+GO
 ---Inserto datos de TipoAuto
 INSERT INTO [LOS_CUATRO_FANTASTICOS].[TipoAuto]([Codigo] ,[Descripcion])
 	SELECT DISTINCT TIPO_AUTO_CODIGO, TIPO_AUTO_DESC
@@ -315,6 +377,8 @@ INSERT INTO [LOS_CUATRO_FANTASTICOS].[TipoAuto]([Codigo] ,[Descripcion])
 
 GO
 
+RAISERROR ('3 - Insertando Cliente', 0, 1) WITH NOWAIT
+GO
 ---Inserto datos de Cliente
 INSERT INTO [LOS_CUATRO_FANTASTICOS].[Cliente]
            ([Nombre]
@@ -359,6 +423,8 @@ INSERT INTO [LOS_CUATRO_FANTASTICOS].[Cliente]
 
 GO
 
+RAISERROR ('3 - Insertando Sucursal', 0, 1) WITH NOWAIT
+GO
 -- Inserto datos Sucursal
 INSERT INTO [LOS_CUATRO_FANTASTICOS].[Sucursal] (Direccion, Mail, Telefono, Ciudad)
 	SELECT DISTINCT [SUCURSAL_DIRECCION], [SUCURSAL_MAIL], [SUCURSAL_TELEFONO], [SUCURSAL_CIUDAD]
@@ -367,6 +433,8 @@ INSERT INTO [LOS_CUATRO_FANTASTICOS].[Sucursal] (Direccion, Mail, Telefono, Ciud
 	ORDER BY [SUCURSAL_CIUDAD]
 GO
 
+RAISERROR ('3 - Insertando Autoparte', 0, 1) WITH NOWAIT
+GO
 --Inserto datos de Autoparte
 INSERT INTO [LOS_CUATRO_FANTASTICOS].Autoparte([Codigo], [Descripcion], [ModeloId], [Categoria])
 SELECT DISTINCT 
@@ -378,6 +446,8 @@ FROM gd_esquema.Maestra
 WHERE AUTO_PARTE_CODIGO IS NOT NULL
 GO
 
+RAISERROR ('3 - Insertando Factura', 0, 1) WITH NOWAIT
+GO
 -- Inserto datos Factura
 SET IDENTITY_INSERT [LOS_CUATRO_FANTASTICOS].[Factura] ON
 INSERT INTO [LOS_CUATRO_FANTASTICOS].[Factura] (
@@ -427,6 +497,11 @@ INSERT INTO [LOS_CUATRO_FANTASTICOS].[Factura] (
 
 SET IDENTITY_INSERT [LOS_CUATRO_FANTASTICOS].[Factura] OFF
 
+RAISERROR ('3 - Fin datos', 0, 1) WITH NOWAIT
+GO
 ------------------------------------------------------------
 --                                              FIN DATOS --
 ------------------------------------------------------------
+
+RAISERROR ('3 - Fin migración', 0, 1) WITH NOWAIT
+GO
