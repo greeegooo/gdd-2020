@@ -463,6 +463,40 @@ FROM (
 ) as compraMaestra
 JOIN LOS_CUATRO_FANTASTICOS.Autoparte autoparteTb ON autoparteTb.Codigo = compraMaestra.AUTO_PARTE_CODIGO
 
+-- INSERT datos FacturaAuto
+INSERT INTO LOS_CUATRO_FANTASTICOS.FacturaAuto(FacturaNumero, AutoId, Precio)
+SELECT
+	autoFactura.FACTURA_NRO,
+	autoTb.Id,
+	autoFactura.PRECIO_FACTURADO
+FROM (
+	SELECT
+		gm.FACTURA_NRO,
+		gm.AUTO_PATENTE,
+		gm.PRECIO_FACTURADO
+	FROM gd_esquema.Maestra gm
+	WHERE gm.FACTURA_FECHA IS NOT NULL AND gm.AUTO_PATENTE IS NOT NULL
+) as autoFactura
+JOIN LOS_CUATRO_FANTASTICOS.Auto autoTb ON autoTb.Patente = autoFactura.AUTO_PATENTE;
+
+-- INSERT datos FacturaAutoparte
+INSERT INTO LOS_CUATRO_FANTASTICOS.FacturaAutoparte(FacturaNumero, AutoparteId, Precio, Cantidad)
+SELECT
+	autoParteFactura.FACTURA_NRO,
+	autoParteTb.Codigo,
+	autoParteFactura.PRECIO_FACTURADO,
+	autoParteFactura.CANT_FACTURADA
+FROM (
+	SELECT
+		gm.FACTURA_NRO,
+		gm.AUTO_PARTE_CODIGO,
+		gm.PRECIO_FACTURADO,
+		gm.CANT_FACTURADA
+	FROM gd_esquema.Maestra gm
+	WHERE gm.FACTURA_FECHA IS NOT NULL AND gm.AUTO_PARTE_CODIGO IS NOT NULL
+) as autoParteFactura
+JOIN LOS_CUATRO_FANTASTICOS.Autoparte autoParteTb ON autoParteTb.Codigo = autoParteFactura.AUTO_PARTE_CODIGO;
+
 ------------------------------------------------------------
 --                                              FIN DATOS --
 ------------------------------------------------------------
