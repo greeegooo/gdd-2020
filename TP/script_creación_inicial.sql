@@ -444,6 +444,25 @@ FROM (
 ) as compraMaestra
 JOIN LOS_CUATRO_FANTASTICOS.Auto autoTb ON autoTb.Patente = compraMaestra.AUTO_PATENTE
 
+
+-- INSERT datos Compra AutoParte
+INSERT INTO LOS_CUATRO_FANTASTICOS.CompraAutoparte(CompraNumero, AutoparteId, Precio, Cantidad)
+SELECT 
+	compraMaestra.COMPRA_NRO, 
+	autoparteTb.Codigo,
+	compraMaestra.COMPRA_PRECIO,
+	compraMaestra.COMPRA_CANT
+FROM (
+	SELECT 
+		gm.COMPRA_NRO,
+		gm.COMPRA_PRECIO,
+		gm.AUTO_PARTE_CODIGO,
+		gm.COMPRA_CANT
+	FROM gd_esquema.Maestra gm
+	WHERE gm.AUTO_PARTE_CODIGO IS NOT NULL
+) as compraMaestra
+JOIN LOS_CUATRO_FANTASTICOS.Autoparte autoparteTb ON autoparteTb.Codigo = compraMaestra.AUTO_PARTE_CODIGO
+
 ------------------------------------------------------------
 --                                              FIN DATOS --
 ------------------------------------------------------------
