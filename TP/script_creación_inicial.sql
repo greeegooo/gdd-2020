@@ -79,7 +79,7 @@ RAISERROR ('1.5 - Creando Cliente', 0, 1) WITH NOWAIT
 GO
 --Creación tabla Auto
 CREATE TABLE [LOS_CUATRO_FANTASTICOS].[Auto] (
-	Id INT PRIMARY KEY,
+	Id INT PRIMARY KEY IDENTITY(1,1),
 	Chasis NVARCHAR(50) NULL,
 	Motor  NVARCHAR(50) NULL,
 	Patente NVARCHAR(50) NULL,
@@ -377,6 +377,23 @@ INSERT INTO [LOS_CUATRO_FANTASTICOS].[TipoAuto]([Codigo] ,[Descripcion])
 
 GO
 
+RAISERROR ('3 - Insertando Auto', 0, 1) WITH NOWAIT
+GO
+INSERT INTO [LOS_CUATRO_FANTASTICOS].[Auto] ([Chasis], [Motor], [Patente], [Fecha_Alta], [Cantidad_Kms], [TipoAutoCodigo], [ModeloCodigo])
+SELECT DISTINCT
+	AUTO_NRO_CHASIS
+	,AUTO_NRO_MOTOR
+	,AUTO_PATENTE
+	,AUTO_FECHA_ALTA
+	,AUTO_CANT_KMS
+	,MODELO_CODIGO
+	,TIPO_AUTO_CODIGO
+FROM [gd_esquema].[Maestra] as ma
+JOIN [LOS_CUATRO_FANTASTICOS].[Modelo] as mo on ma.MODELO_CODIGO = mo.Codigo
+JOIN [LOS_CUATRO_FANTASTICOS].TipoAuto as ta on ma.TIPO_AUTO_CODIGO = ta.Codigo
+
+
+
 RAISERROR ('3 - Insertando Cliente', 0, 1) WITH NOWAIT
 GO
 ---Inserto datos de Cliente
@@ -498,14 +515,11 @@ INSERT INTO [LOS_CUATRO_FANTASTICOS].[Factura] (
 			,[FAC_SUCURSAL_MAIL]
 			,[FAC_SUCURSAL_TELEFONO]) as sarasa
 	JOIN [LOS_CUATRO_FANTASTICOS].[Cliente] as c on sarasa.FAC_CLIENTE_DNI = c.Dni AND sarasa.FAC_CLIENTE_FECHA_NAC = c.Fecha_Nacimiento
-
-
 SET IDENTITY_INSERT [LOS_CUATRO_FANTASTICOS].[Factura] OFF
 
 RAISERROR ('3 - Insertando Compra', 0, 1) WITH NOWAIT
 GO
 SET IDENTITY_INSERT [LOS_CUATRO_FANTASTICOS].[Compra] ON
-
 INSERT INTO LOS_CUATRO_FANTASTICOS.Compra(Numero, Fecha, Precio, ClienteId, SucursalId)
 SELECT 
 	Numero
@@ -548,7 +562,6 @@ FROM (
 		,[SUCURSAL_MAIL]
 		,[SUCURSAL_TELEFONO]) as sarasa
 JOIN [LOS_CUATRO_FANTASTICOS].[Cliente] as c on sarasa.CLIENTE_DNI = c.Dni AND sarasa.CLIENTE_FECHA_NAC = c.Fecha_Nacimiento
-
 SET IDENTITY_INSERT [LOS_CUATRO_FANTASTICOS].[Compra] OFF
 
 -- INSERT datos Compra Auto
@@ -563,10 +576,9 @@ FROM (
 		gm.COMPRA_PRECIO,
 		gm.AUTO_PATENTE
 	FROM gd_esquema.Maestra gm
-	WHERE gm.AUTO_PARTE_CODIGO IS NULL
+	WHERE gm.AUTO_PARTE_CODIGO IS NULL AND gm.COMPRA_NRO IS NOT NULL
 ) as compraMaestra
 JOIN LOS_CUATRO_FANTASTICOS.Auto autoTb ON autoTb.Patente = compraMaestra.AUTO_PATENTE
-
 
 -- INSERT datos Compra AutoParte
 INSERT INTO LOS_CUATRO_FANTASTICOS.CompraAutoparte(CompraNumero, AutoparteId, Precio, Cantidad)
