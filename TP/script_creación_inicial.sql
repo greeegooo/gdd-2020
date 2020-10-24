@@ -427,6 +427,23 @@ GO
 --		FACTURA_FECHA
 --SET IDENTITY_INSERT [LOS_CUATRO_FANTASTICOS].[Factura] OFF
 
+
+
+INSERT INTO LOS_CUATRO_FANTASTICOS.CompraAuto(CompraNumero, AutoId, Precio)
+SELECT 
+	compraMaestra.COMPRA_NRO, 
+	autoTb.Id,
+	compraMaestra.COMPRA_PRECIO
+FROM (
+	SELECT 
+		gm.COMPRA_NRO,
+		gm.COMPRA_PRECIO,
+		gm.AUTO_PATENTE
+	FROM gd_esquema.Maestra gm
+	WHERE gm.AUTO_PARTE_CODIGO IS NULL
+) as compraMaestra
+JOIN LOS_CUATRO_FANTASTICOS.Auto autoTb ON autoTb.Patente = compraMaestra.AUTO_PATENTE
+
 ------------------------------------------------------------
 --                                              FIN DATOS --
 ------------------------------------------------------------
