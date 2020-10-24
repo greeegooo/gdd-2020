@@ -579,8 +579,8 @@ INSERT INTO LOS_CUATRO_FANTASTICOS.CompraAuto(CompraNumero, AutoId, Precio)
 --	WHERE gm.AUTO_PARTE_CODIGO IS NULL AND gm.COMPRA_NRO IS NOT NULL
 --) as compraMaestra
 --JOIN LOS_CUATRO_FANTASTICOS.Auto autoTb ON autoTb.Patente = compraMaestra.AUTO_PATENTE
-SELECT 
-	m.COMPRA_NRO, 
+SELECT DISTINCT
+	compra.Numero, 
 	autoTabla.Id,
 	m.COMPRA_PRECIO
 FROM [gd_esquema].[Maestra] as m
