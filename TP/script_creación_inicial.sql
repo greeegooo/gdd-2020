@@ -610,21 +610,11 @@ JOIN LOS_CUATRO_FANTASTICOS.Auto autoTb ON autoTb.Patente = autoFactura.AUTO_PAT
 
 -- INSERT datos FacturaAutoparte
 INSERT INTO LOS_CUATRO_FANTASTICOS.FacturaAutoparte(FacturaNumero, AutoparteId, Precio, Cantidad)
-SELECT
-	autoParteFactura.FACTURA_NRO,
-	autoParteTb.Codigo,
-	autoParteFactura.PRECIO_FACTURADO,
-	autoParteFactura.CANT_FACTURADA
-FROM (
-	SELECT
-		gm.FACTURA_NRO,
-		gm.AUTO_PARTE_CODIGO,
-		gm.PRECIO_FACTURADO,
-		gm.CANT_FACTURADA
-	FROM gd_esquema.Maestra gm
-	WHERE gm.FACTURA_FECHA IS NOT NULL AND gm.AUTO_PARTE_CODIGO IS NOT NULL
-) as autoParteFactura
-JOIN LOS_CUATRO_FANTASTICOS.Autoparte autoParteTb ON autoParteTb.Codigo = autoParteFactura.AUTO_PARTE_CODIGO;
+select  FACTURA_NRO,  m.AUTO_PARTE_CODIGO, sum(PRECIO_FACTURADO), sum(CANT_FACTURADA)
+FROM [GD2C2020].[gd_esquema].[Maestra] m
+inner join [LOS_CUATRO_FANTASTICOS].[Autoparte] ap on m.AUTO_PARTE_CODIGO = ap.Codigo
+where [FACTURA_NRO] is not null and AUTO_PARTE_CODIGO is not null
+group by [FACTURA_NRO], FACTURA_FECHA , m.AUTO_PARTE_CODIGO
 
 RAISERROR ('3 - Fin datos', 0, 1) WITH NOWAIT
 GO
