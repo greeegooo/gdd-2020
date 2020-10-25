@@ -580,7 +580,7 @@ SELECT
 	compraMaestra.COMPRA_NRO, 
 	autoparteTb.Codigo,
 	compraMaestra.COMPRA_PRECIO,
-	compraMaestra.COMPRA_CANT
+	SUM(compraMaestra.COMPRA_CANT)
 FROM (
 	SELECT 
 		gm.COMPRA_NRO,
@@ -591,6 +591,8 @@ FROM (
 	WHERE gm.AUTO_PARTE_CODIGO IS NOT NULL
 ) as compraMaestra
 JOIN LOS_CUATRO_FANTASTICOS.Autoparte autoparteTb ON autoparteTb.Codigo = compraMaestra.AUTO_PARTE_CODIGO
+where COMPRA_NRO is not null
+group by COMPRA_NRO, Codigo, COMPRA_PRECIO
 
 -- INSERT datos FacturaAuto
 INSERT INTO LOS_CUATRO_FANTASTICOS.FacturaAuto(FacturaNumero, AutoId, Precio)
