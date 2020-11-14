@@ -246,6 +246,19 @@ GO
 
 RAISERROR ('2.10 - Insertando BI_Tiempo', 0, 1) WITH NOWAIT
 GO
+INSERT INTO [LOS_CUATRO_FANTASTICOS].[BI_Tiempo] (Año, Mes)
+SELECT * FROM (
+SELECT DISTINCT
+	Anio = YEAR(Fecha), 
+	Mes = MONTH(Fecha)
+FROM [LOS_CUATRO_FANTASTICOS].[Compra]
+--ORDER BY Anio, Mes
+UNION
+SELECT DISTINCT
+	Anio = YEAR(Fecha), 
+	Mes = MONTH(Fecha)
+FROM [LOS_CUATRO_FANTASTICOS].[Factura]) as tiempo
+ORDER BY Anio, Mes
 
 RAISERROR ('2.11 - Insertando BI_Compra_Venta_Auto_Autoparte', 0, 1) WITH NOWAIT
 GO
