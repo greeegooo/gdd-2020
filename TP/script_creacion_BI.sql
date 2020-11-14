@@ -30,7 +30,7 @@ GO
 CREATE TABLE [LOS_CUATRO_FANTASTICOS].[BI_Caja] (
 	Codigo DECIMAL(18,0) PRIMARY KEY,
 	Descripcion NVARCHAR(255) NOT NULL,
-
+	Cantidad_Cambios INT NULL
 )
 GO
 
@@ -38,8 +38,7 @@ RAISERROR ('1.5 - Creando [BI_Transmision]', 0, 1) WITH NOWAIT
 GO
 CREATE TABLE [LOS_CUATRO_FANTASTICOS].[BI_Transmision] (
 	Codigo DECIMAL(18,0) PRIMARY KEY,
-	Descripcion NVARCHAR(255)  NOT NULL,
-	Cantidad_Cambios INT NULL
+	Descripcion NVARCHAR(255)  NOT NULL
 )
 GO
 
@@ -170,8 +169,8 @@ GO
 RAISERROR ('2.3 - Insertando [BI_Caja]', 0, 1) WITH NOWAIT
 GO
 ---Inserto datos de Tipo Caja
-INSERT INTO [LOS_CUATRO_FANTASTICOS].[BI_Caja]([Codigo] ,[Descripcion])
-	SELECT [Codigo],[Descripcion]
+INSERT INTO [LOS_CUATRO_FANTASTICOS].[BI_Caja]([Codigo] ,[Descripcion], [Cantidad_Cambios])
+	SELECT [Codigo],[Descripcion], null
 	FROM [LOS_CUATRO_FANTASTICOS].[Caja]
 GO
 
