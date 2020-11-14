@@ -3,7 +3,6 @@ GO
 
 RAISERROR ('1. - Creando [BI_Tiempo]', 0, 1) WITH NOWAIT
 GO
--- Creación tabla Tiempo
 CREATE TABLE [LOS_CUATRO_FANTASTICOS].[BI_Tiempo] (
 	Id INT PRIMARY KEY IDENTITY(1,1),
 	Año INT NULL,
@@ -12,7 +11,6 @@ CREATE TABLE [LOS_CUATRO_FANTASTICOS].[BI_Tiempo] (
 
 RAISERROR ('1. - Creando [BI_CategoriaAutoParte]', 0, 1) WITH NOWAIT
 GO
--- Creación tabla CategoriaAutoParte
 CREATE TABLE [LOS_CUATRO_FANTASTICOS].[BI_CategoriaAutoParte] (
 	Codigo INT PRIMARY KEY IDENTITY(1,1),
 	Descripcion NVARCHAR(255) NULL
@@ -21,7 +19,6 @@ CREATE TABLE [LOS_CUATRO_FANTASTICOS].[BI_CategoriaAutoParte] (
 
 RAISERROR ('1. - Creando [BI_Fabricante]', 0, 1) WITH NOWAIT
 GO
---Creación tabla Fabricante
 CREATE TABLE [LOS_CUATRO_FANTASTICOS].[BI_Fabricante] (
 	Id INT PRIMARY KEY IDENTITY(1,1),
 	Nombre NVARCHAR(255) NULL,
@@ -30,7 +27,6 @@ GO
 
 RAISERROR ('1. - Creando [BI_Caja]', 0, 1) WITH NOWAIT
 GO
---Creación tabla Caja
 CREATE TABLE [LOS_CUATRO_FANTASTICOS].[BI_Caja] (
 	Codigo DECIMAL(18,0) PRIMARY KEY,
 	Descripcion NVARCHAR(255) NOT NULL,
@@ -40,7 +36,6 @@ GO
 
 RAISERROR ('1. - Creando [BI_Transmision]', 0, 1) WITH NOWAIT
 GO
---Creación tabla Transmision
 CREATE TABLE [LOS_CUATRO_FANTASTICOS].[BI_Transmision] (
 	Codigo DECIMAL(18,0) PRIMARY KEY,
 	Descripcion NVARCHAR(255)  NOT NULL,
@@ -50,7 +45,6 @@ GO
 
 RAISERROR ('1. - Creando [BI_Motor]', 0, 1) WITH NOWAIT
 GO
---Creación tabla Motor
 CREATE TABLE [LOS_CUATRO_FANTASTICOS].[BI_Motor] (
 	Codigo DECIMAL(18,0) PRIMARY KEY,
 	Descripcion NVARCHAR(255)  NULL,
@@ -58,9 +52,8 @@ CREATE TABLE [LOS_CUATRO_FANTASTICOS].[BI_Motor] (
 GO
 
 
-RAISERROR ('1. - Creación Sucursal', 0, 1) WITH NOWAIT
+RAISERROR ('1. - Creando Sucursal', 0, 1) WITH NOWAIT
 GO
----Inserto datos de Sucursal
 CREATE TABLE LOS_CUATRO_FANTASTICOS.BI_Sucursal (
 	Id INT IDENTITY PRIMARY KEY,
 	Direccion NVARCHAR(255) NOT NULL,
@@ -70,9 +63,8 @@ CREATE TABLE LOS_CUATRO_FANTASTICOS.BI_Sucursal (
 )
 GO
 
-RAISERROR ('1. - Creación Cliente', 0, 1) WITH NOWAIT
+RAISERROR ('1. - Creando Cliente', 0, 1) WITH NOWAIT
 GO
----Inserto datos de Cliente 
 CREATE TABLE LOS_CUATRO_FANTASTICOS.BI_Cliente (
 	Id INT PRIMARY KEY,
 	Edad NVARCHAR(11) NOT NULL,
@@ -80,9 +72,8 @@ CREATE TABLE LOS_CUATRO_FANTASTICOS.BI_Cliente (
 )
 GO
 
-RAISERROR ('1. - Creación Tipo Auto', 0, 1) WITH NOWAIT
+RAISERROR ('1. - Creando Tipo Auto', 0, 1) WITH NOWAIT
 GO
----Inserto datos de Tipo_Auto
 CREATE TABLE LOS_CUATRO_FANTASTICOS.BI_Tipo_Auto (
 	Codigo DECIMAL(18, 0) IDENTITY PRIMARY KEY,
 	Descripcion NVARCHAR(255)
@@ -92,7 +83,6 @@ GO
 
 RAISERROR ('1. - Creando [BI_Compra_Venta_Auto_Autoparte]', 0, 1) WITH NOWAIT
 GO
--- Creación tabla BI_Compra_Venta_Auto_Autoparte
 CREATE TABLE [LOS_CUATRO_FANTASTICOS].[BI_Compra_Venta_Auto_Autoparte] (
 	Tipo_Compra_Venta CHAR(1) NOT NULL,
 	Tipo_Auto_Autoparte NVARCHAR(10) NOT NULL,
