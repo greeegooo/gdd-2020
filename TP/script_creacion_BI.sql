@@ -183,7 +183,7 @@ INSERT INTO [LOS_CUATRO_FANTASTICOS].[BI_Motor]([Codigo] ,[Descripcion])
 	FROM [LOS_CUATRO_FANTASTICOS].[Motor]
 GO
 
-RAISERROR ('2.4 - Insertando [BI_Sucursal]', 0, 1) WITH NOWAIT
+RAISERROR ('2.5 - Insertando [BI_Sucursal]', 0, 1) WITH NOWAIT
 GO
 ---Inserto datos de Sucursal
 INSERT INTO [LOS_CUATRO_FANTASTICOS].[BI_Sucursal](Direccion, Mail, Telefono, Ciudad)
@@ -191,7 +191,7 @@ INSERT INTO [LOS_CUATRO_FANTASTICOS].[BI_Sucursal](Direccion, Mail, Telefono, Ci
 	FROM [LOS_CUATRO_FANTASTICOS].[Sucursal]
 GO
 
-RAISERROR ('2.4 - Insertando [BI_Cliente]', 0, 1) WITH NOWAIT
+RAISERROR ('2.6 Insertando [BI_Cliente]', 0, 1) WITH NOWAIT
 GO
 ---Inserto datos de Cliente
 INSERT INTO [LOS_CUATRO_FANTASTICOS].[BI_Cliente](Id, Sexo, Edad)
@@ -204,7 +204,7 @@ INSERT INTO [LOS_CUATRO_FANTASTICOS].[BI_Cliente](Id, Sexo, Edad)
 	FROM [LOS_CUATRO_FANTASTICOS].[Cliente] as a
 GO
 
-RAISERROR ('2.4 - Insertando [BI_TipoAuto]', 0, 1) WITH NOWAIT
+RAISERROR ('2.7 - Insertando [BI_TipoAuto]', 0, 1) WITH NOWAIT
 GO
 ---Inserto datos de TipoAuto
 INSERT INTO [LOS_CUATRO_FANTASTICOS].[BI_TipoAuto](Codigo, Descripcion)
@@ -212,7 +212,7 @@ INSERT INTO [LOS_CUATRO_FANTASTICOS].[BI_TipoAuto](Codigo, Descripcion)
 	FROM [LOS_CUATRO_FANTASTICOS].[TipoAuto]
 GO
 
-RAISERROR ('2.5 - Insertando BI_CategoriaAutoParte', 0, 1) WITH NOWAIT
+RAISERROR ('2.8 - Insertando BI_CategoriaAutoParte', 0, 1) WITH NOWAIT
 GO
 ---Inserto datos de BI_CategoriaAutoParte
 INSERT INTO [LOS_CUATRO_FANTASTICOS].[BI_CategoriaAutoParte]([Codigo] ,[Descripcion])
@@ -221,7 +221,7 @@ SELECT DISTINCT [Codigo],[Descripcion]
 
 GO
 
-RAISERROR ('2.6 - Insertando BI_Modelo', 0, 1) WITH NOWAIT
+RAISERROR ('2.9 - Insertando BI_Modelo', 0, 1) WITH NOWAIT
 GO
 ---Inserto datos de BI_Modelo
 INSERT INTO [LOS_CUATRO_FANTASTICOS].[BI_Modelo](
@@ -243,6 +243,114 @@ SELECT DISTINCT
   FROM [LOS_CUATRO_FANTASTICOS].[Modelo]
 
 GO
+
+RAISERROR ('2.10 - Insertando BI_Tiempo', 0, 1) WITH NOWAIT
+GO
+
+RAISERROR ('2.11 - Insertando BI_Compra_Venta_Auto_Autoparte', 0, 1) WITH NOWAIT
+GO
+-- COMPRA AUTO
+INSERT INTO [LOS_CUATRO_FANTASTICOS].[BI_Compra_Venta_Auto_Autoparte] 
+([IdCliente], [IdSucursal], [IdTiempo], [IdModelo], [IdTipoAuto], [IdCategoria], [Tipo_Compra_Venta], [Tipo_Auto_Autoparte], [Precio], [Cantidad])
+SELECT 
+	[IdCliente] = bicliente.Id, 
+	[IdSucursal] = compra.SucursalId, 
+	[IdTiempo] = (
+		SELECT Id 
+		FROM [LOS_CUATRO_FANTASTICOS].[BI_Tiempo] as bitiempo 
+		WHERE bitiempo.Año = YEAR(compra.Fecha) 
+			and bitiempo.Mes = MONTH(compra.Fecha)), 
+	[IdModelo] = modelo.Codigo, 
+	[IdTipoAuto] = tipoauto.Codigo, 
+	[IdCategoria] = null, 
+	[Tipo_Compra_Venta] = 'C', 
+	[Tipo_Auto_Autoparte] = 'AUTO', 
+	[Precio] = compraauto.Precio,
+	[Cantidad] = null
+FROM [LOS_CUATRO_FANTASTICOS].[Compra] as compra
+INNER JOIN [LOS_CUATRO_FANTASTICOS].[CompraAuto] as compraauto on compra.Numero = compraauto.CompraNumero
+INNER JOIN [LOS_CUATRO_FANTASTICOS].[Auto] as autoo on compraauto.AutoId = autoo.Id
+INNER JOIN [LOS_CUATRO_FANTASTICOS].[TipoAuto] as tipoauto on autoo.TipoAutoCodigo = tipoauto.Codigo
+INNER JOIN [LOS_CUATRO_FANTASTICOS].[Modelo] as modelo on autoo.ModeloCodigo = modelo.Codigo
+INNER JOIN [LOS_CUATRO_FANTASTICOS].[BI_Cliente] as bicliente on bicliente.Id = compra.ClienteId
+GO
+
+-- COMPRA AUTOPARTE
+INSERT INTO [LOS_CUATRO_FANTASTICOS].[BI_Compra_Venta_Auto_Autoparte] 
+([IdCliente], [IdSucursal], [IdTiempo], [IdModelo], [IdTipoAuto], [IdCategoria], [Tipo_Compra_Venta], [Tipo_Auto_Autoparte], [Precio], [Cantidad])
+SELECT 
+	[IdCliente] = bicliente.Id, 
+	[IdSucursal] = compra.SucursalId, 
+	[IdTiempo] = (
+		SELECT Id 
+		FROM [LOS_CUATRO_FANTASTICOS].[BI_Tiempo] as bitiempo 
+		WHERE bitiempo.Año = YEAR(compra.Fecha) 
+			and bitiempo.Mes = MONTH(compra.Fecha)), 
+	[IdModelo] = modelo.Codigo, 
+	[IdTipoAuto] = null, 
+	[IdCategoria] = categoria.Codigo, 
+	[Tipo_Compra_Venta] = 'C', 
+	[Tipo_Auto_Autoparte] = 'AUTOPARTE', 
+	[Precio] = compraautoparte.Precio,
+	[Cantidad] = compraautoparte.Cantidad
+FROM [LOS_CUATRO_FANTASTICOS].[Compra] as compra
+INNER JOIN [LOS_CUATRO_FANTASTICOS].[CompraAutoparte] as compraautoparte on compra.Numero = compraautoparte.CompraNumero
+INNER JOIN [LOS_CUATRO_FANTASTICOS].[Autoparte] as autoparte on compraautoparte.AutoparteId = autoparte.Codigo
+LEFT JOIN [LOS_CUATRO_FANTASTICOS].[CategoriaAutoparte] as categoria on categoria.Codigo = autoparte.Categoria
+INNER JOIN [LOS_CUATRO_FANTASTICOS].[Modelo] as modelo on modelo.Codigo = autoparte.ModeloId
+INNER JOIN [LOS_CUATRO_FANTASTICOS].[BI_Cliente] as bicliente on bicliente.Id = compra.ClienteId
+GO
+
+-- VENTA AUTO
+INSERT INTO [LOS_CUATRO_FANTASTICOS].[BI_Compra_Venta_Auto_Autoparte] 
+([IdCliente], [IdSucursal], [IdTiempo], [IdModelo], [IdTipoAuto], [IdCategoria], [Tipo_Compra_Venta], [Tipo_Auto_Autoparte], [Precio], [Cantidad])
+SELECT 
+	[IdCliente] = bicliente.Id, 
+	[IdSucursal] = factura.SucursalId, 
+	[IdTiempo] = (
+		SELECT Id 
+		FROM [LOS_CUATRO_FANTASTICOS].[BI_Tiempo] as bitiempo 
+		WHERE bitiempo.Año = YEAR(factura.Fecha) 
+			and bitiempo.Mes = MONTH(factura.Fecha)), 
+	[IdModelo] = modelo.Codigo, 
+	[IdTipoAuto] = tipoauto.Codigo, 
+	[IdCategoria] = null, 
+	[Tipo_Compra_Venta] = 'V', 
+	[Tipo_Auto_Autoparte] = 'AUTO', 
+	[Precio] = facturaauto.Precio,
+	[Cantidad] = null
+FROM [LOS_CUATRO_FANTASTICOS].[Factura] as factura
+INNER JOIN [LOS_CUATRO_FANTASTICOS].[FacturaAuto] as facturaauto on factura.Numero = facturaauto.FacturaNumero
+INNER JOIN [LOS_CUATRO_FANTASTICOS].[Auto] as autoo on facturaauto.AutoId = autoo.Id
+INNER JOIN [LOS_CUATRO_FANTASTICOS].[TipoAuto] as tipoauto on autoo.TipoAutoCodigo = tipoauto.Codigo
+INNER JOIN [LOS_CUATRO_FANTASTICOS].[Modelo] as modelo on autoo.ModeloCodigo = modelo.Codigo
+INNER JOIN [LOS_CUATRO_FANTASTICOS].[BI_Cliente] as bicliente on bicliente.Id = factura.ClienteId
+GO
+
+-- VENTA AUTOPARTE
+INSERT INTO [LOS_CUATRO_FANTASTICOS].[BI_Compra_Venta_Auto_Autoparte] 
+([IdCliente], [IdSucursal], [IdTiempo], [IdModelo], [IdTipoAuto], [IdCategoria], [Tipo_Compra_Venta], [Tipo_Auto_Autoparte], [Precio], [Cantidad])
+SELECT 
+	[IdCliente] = bicliente.Id, 
+	[IdSucursal] = factura.SucursalId, 
+	[IdTiempo] = (
+		SELECT Id 
+		FROM [LOS_CUATRO_FANTASTICOS].[BI_Tiempo] as bitiempo 
+		WHERE bitiempo.Año = YEAR(factura.Fecha) 
+			and bitiempo.Mes = MONTH(factura.Fecha)), 
+	[IdModelo] = modelo.Codigo, 
+	[IdTipoAuto] = null, 
+	[IdCategoria] = categoria.Codigo, 
+	[Tipo_Compra_Venta] = 'V', 
+	[Tipo_Auto_Autoparte] = 'AUTOPARTE', 
+	[Precio] = facturaautoparte.Precio,
+	[Cantidad] = facturaautoparte.Cantidad
+FROM [LOS_CUATRO_FANTASTICOS].[Factura] as factura
+INNER JOIN [LOS_CUATRO_FANTASTICOS].[FacturaAutoparte] as facturaautoparte on factura.Numero = facturaautoparte.FacturaNumero
+INNER JOIN [LOS_CUATRO_FANTASTICOS].[Autoparte] as autoparte on facturaautoparte.AutoparteId = autoparte.Codigo
+LEFT JOIN [LOS_CUATRO_FANTASTICOS].[CategoriaAutoparte] as categoria on categoria.Codigo = autoparte.Categoria
+INNER JOIN [LOS_CUATRO_FANTASTICOS].[Modelo] as modelo on modelo.Codigo = autoparte.ModeloId
+INNER JOIN [LOS_CUATRO_FANTASTICOS].[BI_Cliente] as bicliente on bicliente.Id = factura.ClienteId
 
 RAISERROR ('2 - Fin insertando datos', 0, 1) WITH NOWAIT
 GO
