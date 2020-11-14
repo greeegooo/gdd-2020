@@ -117,43 +117,42 @@ GO
 ---------------------------------------------------------
 
 
-RAISERROR ('2.1 - Insertando Fabricante', 0, 1) WITH NOWAIT
+RAISERROR ('2.1 - Insertando [BI_Fabricante]', 0, 1) WITH NOWAIT
 GO
 -- Inserto datos de Fabricante
 INSERT INTO [LOS_CUATRO_FANTASTICOS].[BI_Fabricante] (Nombre)
 	SELECT 
-		[FABRICANTE_NOMBRE]
-	FROM gd_esquema.Maestra 
-	GROUP BY [FABRICANTE_NOMBRE]
-	ORDER BY [FABRICANTE_NOMBRE] 
+		[Nombre]
+	FROM [LOS_CUATRO_FANTASTICOS].[Fabricante]
+	
 GO
 
-RAISERROR ('2.2 - Insertando Transmision', 0, 1) WITH NOWAIT
+RAISERROR ('2.2 - Insertando [BI_Transmision]', 0, 1) WITH NOWAIT
 GO
 ---Inserto datos de Tipo Transmision
 INSERT INTO [LOS_CUATRO_FANTASTICOS].[BI_Transmision]([Codigo] ,[Descripcion])
-	SELECT DISTINCT [TIPO_TRANSMISION_CODIGO], [TIPO_TRANSMISION_DESC]
-	FROM [GD2C2020].[gd_esquema].[Maestra]
-	WHERE [TIPO_TRANSMISION_CODIGO] IS NOT NULL
+	SELECT[Codigo],[Descripcion]
+	FROM [LOS_CUATRO_FANTASTICOS].[Transmision]
+	
 
 GO
 
-RAISERROR ('2.3 - Insertando Caja', 0, 1) WITH NOWAIT
+RAISERROR ('2.3 - Insertando [BI_Caja]', 0, 1) WITH NOWAIT
 GO
 ---Inserto datos de Tipo Caja
 INSERT INTO [LOS_CUATRO_FANTASTICOS].[BI_Caja]([Codigo] ,[Descripcion])
-	SELECT DISTINCT TIPO_CAJA_CODIGO, TIPO_CAJA_DESC, NULL
-	FROM [GD2C2020].[gd_esquema].[Maestra]
-	WHERE TIPO_CAJA_CODIGO IS NOT NULL 
+	SELECT [Codigo],[Descripcion], NULL
+	FROM [LOS_CUATRO_FANTASTICOS].[Caja]
+	
 
 GO
 
-RAISERROR ('2.4 - Insertando Motor', 0, 1) WITH NOWAIT
+RAISERROR ('2.4 - Insertando [BI_Motor]', 0, 1) WITH NOWAIT
 GO
 ---Inserto datos de Tipo Motor
 INSERT INTO [LOS_CUATRO_FANTASTICOS].[BI_Motor]([Codigo] ,[Descripcion])
-	SELECT DISTINCT TIPO_MOTOR_CODIGO, NULL
-	FROM [GD2C2020].[gd_esquema].[Maestra]
-	WHERE TIPO_MOTOR_CODIGO IS NOT NULL
+	SELECT [Codigo],[Descripcion]
+	FROM [LOS_CUATRO_FANTASTICOS].[Motor]
+	
 
 GO
