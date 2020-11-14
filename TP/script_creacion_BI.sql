@@ -375,7 +375,7 @@ GO
 RAISERROR ('3 - Creando Vistas', 0, 1) WITH NOWAIT
 GO
 
-CREATE VIEW view_automoviles_vendidos_comprados_surcursal_mes as (
+CREATE VIEW view_automoviles_vendidos_comprados_surcursal_mes AS (
 	SELECT 
 		sucursal.Id AS [Sucursal_ID],
 		tiempo.Año AS [Año],
@@ -390,9 +390,21 @@ CREATE VIEW view_automoviles_vendidos_comprados_surcursal_mes as (
 )
 GO
 
+CREATE VIEW view_precio_promedio_automoviles_vendidos_comprados AS (
+	SELECT 
+		modelo.Nombre AS [Modelo],
+		compra_venta.Tipo_Compra_Venta AS [Tipo_Compra_Venta],
+		FLOOR(AVG(compra_venta.Precio)) AS [Precio_Promedio]
+	FROM [LOS_CUATRO_FANTASTICOS].[BI_Compra_Venta_Auto_Autoparte] AS compra_venta
+		INNER JOIN [LOS_CUATRO_FANTASTICOS].[BI_Modelo] AS modelo ON (modelo.Codigo = compra_venta.IdModelo)
+	WHERE compra_venta.Tipo_Auto_Autoparte = 'AUTO'
+	GROUP BY compra_venta.Tipo_Compra_Venta, modelo.Nombre
+)
+GO
+
 -- Automóviles:
---- Cantidad de automóviles, vendidos y comprados x sucursal y mes (view_automoviles_vendidos_comprados_surcursal_mes)
---- o Precio promedio de automóviles, vendidos y comprados.
+--- Cantidad de automóviles, vendidos y comprados x sucursal y mes. (view_automoviles_vendidos_comprados_surcursal_mes)
+--- Precio promedio de automóviles, vendidos y comprados. (view_precio_promedio_automoviles_vendidos_comprados)
 --- o Ganancias (precio de venta – precio de compra) x Sucursal x mes
 --- o Promedio de tiempo en stock de cada modelo de automóvil.
 -- Autopartes
@@ -400,4 +412,6 @@ GO
 --- o Ganancias (precio de venta – precio de compra) x Sucursal x mes
 --- o Promedio de tiempo en stock de cada autoparte.
 --- o Máxima cantidad de stock por cada sucursal (anual) 
+
+
 
