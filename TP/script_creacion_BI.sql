@@ -124,3 +124,35 @@ INSERT INTO [LOS_CUATRO_FANTASTICOS].[BI_Motor]([Codigo] ,[Descripcion])
 	WHERE TIPO_MOTOR_CODIGO IS NOT NULL
 
 GO
+
+RAISERROR ('3.1 - Insertando Sucursal', 0, 1) WITH NOWAIT
+GO
+---Inserto datos de Sucursal
+CREATE TABLE LOS_CUATRO_FANTASTICOS.BI_Sucursal (
+	Id INT IDENTITY PRIMARY KEY,
+	Direccion NVARCHAR(255) NOT NULL,
+	Mail NVARCHAR(255) NOT NULL,
+	Telefono DECIMAL(18, 0) NOT NULL,
+	Ciudad NVARCHAR(255) NOT NULL
+)
+GO
+
+RAISERROR ('3.2 - Insertando Cliente', 0, 1) WITH NOWAIT
+GO
+---Inserto datos de Cliente
+CREATE TABLE LOS_CUATRO_FANTASTICOS.BI_Cliente (
+	Id INT PRIMARY KEY,
+	Edad NVARCHAR(11) NOT NULL,
+	Sexo CHAR(1)
+)
+GO
+
+RAISERROR ('3.3 - Insertando Tipo Auto', 0, 1) WITH NOWAIT
+GO
+---Inserto datos de Tipo_Auto
+CREATE TABLE LOS_CUATRO_FANTASTICOS.BI_Tipo_Auto (
+	Codigo DECIMAL(18, 0) IDENTITY PRIMARY KEY,
+	Descripcion NVARCHAR(255)
+)
+GO
+
