@@ -51,6 +51,19 @@ CREATE TABLE [LOS_CUATRO_FANTASTICOS].[BI_Motor] (
 )
 GO
 
+RAISERROR ('1. - Creando [BI_Modelo]', 0, 1) WITH NOWAIT
+GO
+-- Creación tabla Modelo
+CREATE TABLE [LOS_CUATRO_FANTASTICOS].[BI_Modelo] (
+	Codigo INT PRIMARY KEY IDENTITY(1,1),
+	Nombre NVARCHAR(50) NULL,
+	Potencia NVARCHAR(50) NULL,
+	FabricanteId INT NOT NULL,
+	CanjeId DECIMAL(18,0) NULL,
+	TransmisionId DECIMAL(18,0) NULL,
+	MotorId DECIMAL(18,0) NULL
+)
+GO
 
 RAISERROR ('1. - Creando Sucursal', 0, 1) WITH NOWAIT
 GO
@@ -95,6 +108,33 @@ CREATE TABLE [LOS_CUATRO_FANTASTICOS].[BI_Compra_Venta_Auto_Autoparte] (
 	IdCategoria INT NULL REFERENCES [LOS_CUATRO_FANTASTICOS].[BI_CategoriaAutoparte]
 )
 
+GO
+
+RAISERROR ('1 - Creando de Constrains e Indices', 0, 1) WITH NOWAIT
+GO
+
+--Creación clave forania de la tabla BI_Modelo con BI_Fabricante
+ALTER TABLE [LOS_CUATRO_FANTASTICOS].[BI_Modelo]  
+ADD CONSTRAINT FK_FabricanteId FOREIGN KEY (FabricanteId)
+REFERENCES [LOS_CUATRO_FANTASTICOS].[BI_Fabricante] (Id)
+GO
+
+--Creación clave forania de la tabla BI_Modelo con BI_Caja
+ALTER TABLE [LOS_CUATRO_FANTASTICOS].[BI_Modelo]  
+ADD CONSTRAINT FK_CanjeId FOREIGN KEY (CanjeId)
+REFERENCES [LOS_CUATRO_FANTASTICOS].[BI_Caja] (Codigo)
+GO
+
+--Creación clave forania de la tabla BI_Modelo con BI_Transmision
+ALTER TABLE [LOS_CUATRO_FANTASTICOS].[BI_Modelo]  
+ADD CONSTRAINT FK_TransmisionId FOREIGN KEY (TransmisionId)
+REFERENCES [LOS_CUATRO_FANTASTICOS].[BI_Transmision] (Codigo)
+GO
+
+--Creación clave forania de la tabla BI_Modelo con BI_Motor
+ALTER TABLE [LOS_CUATRO_FANTASTICOS].[BI_Modelo]  
+ADD CONSTRAINT FK_MotorId FOREIGN KEY (MotorId)
+REFERENCES [LOS_CUATRO_FANTASTICOS].[BI_Motor] (Codigo)
 GO
 
 RAISERROR ('X - Fin Tablas', 0, 1) WITH NOWAIT
