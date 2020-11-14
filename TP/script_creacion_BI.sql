@@ -196,9 +196,9 @@ GO
 INSERT INTO [LOS_CUATRO_FANTASTICOS].[BI_Cliente](Id, Sexo, Edad)
 	SELECT [Id], null, 
 	CASE 
-		WHEN DATEDIFF(YEAR, [Fecha_Nacimiento], GETDATE()) <= 30 THEN '18 - 30 años'
+		WHEN DATEDIFF(YEAR, [Fecha_Nacimiento], GETDATE()) <= 30 THEN '18-30 años'
 		WHEN DATEDIFF(YEAR, [Fecha_Nacimiento], GETDATE()) > 50 THEN '> 50 años'
-		ELSE '31 - 50 años'
+		ELSE '31-50 años'
 	END
 	FROM [LOS_CUATRO_FANTASTICOS].[Cliente] as a
 GO
