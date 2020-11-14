@@ -12,7 +12,7 @@ CREATE TABLE [LOS_CUATRO_FANTASTICOS].[BI_Tiempo] (
 RAISERROR ('1.2 - Creando [BI_CategoriaAutoParte]', 0, 1) WITH NOWAIT
 GO
 CREATE TABLE [LOS_CUATRO_FANTASTICOS].[BI_CategoriaAutoParte] (
-	Codigo INT PRIMARY KEY IDENTITY(1,1),
+	Codigo INT PRIMARY KEY,
 	Descripcion NVARCHAR(255) NULL
 )
 
@@ -171,7 +171,7 @@ RAISERROR ('2.3 - Insertando [BI_Caja]', 0, 1) WITH NOWAIT
 GO
 ---Inserto datos de Tipo Caja
 INSERT INTO [LOS_CUATRO_FANTASTICOS].[BI_Caja]([Codigo] ,[Descripcion])
-	SELECT [Codigo],[Descripcion], NULL
+	SELECT [Codigo],[Descripcion]
 	FROM [LOS_CUATRO_FANTASTICOS].[Caja]
 GO
 
