@@ -1,7 +1,7 @@
 RAISERROR ('1 - Creando tablas BI', 0, 1) WITH NOWAIT
 GO
 
-RAISERROR ('1. - Creando [BI_Tiempo]', 0, 1) WITH NOWAIT
+RAISERROR ('1.1 - Creando [BI_Tiempo]', 0, 1) WITH NOWAIT
 GO
 CREATE TABLE [LOS_CUATRO_FANTASTICOS].[BI_Tiempo] (
 	Id INT PRIMARY KEY IDENTITY(1,1),
@@ -9,7 +9,7 @@ CREATE TABLE [LOS_CUATRO_FANTASTICOS].[BI_Tiempo] (
 	Mes INT NULL
 )
 
-RAISERROR ('1. - Creando [BI_CategoriaAutoParte]', 0, 1) WITH NOWAIT
+RAISERROR ('1.2 - Creando [BI_CategoriaAutoParte]', 0, 1) WITH NOWAIT
 GO
 CREATE TABLE [LOS_CUATRO_FANTASTICOS].[BI_CategoriaAutoParte] (
 	Codigo INT PRIMARY KEY IDENTITY(1,1),
@@ -17,7 +17,7 @@ CREATE TABLE [LOS_CUATRO_FANTASTICOS].[BI_CategoriaAutoParte] (
 )
 
 
-RAISERROR ('1. - Creando [BI_Fabricante]', 0, 1) WITH NOWAIT
+RAISERROR ('1.3 - Creando [BI_Fabricante]', 0, 1) WITH NOWAIT
 GO
 CREATE TABLE [LOS_CUATRO_FANTASTICOS].[BI_Fabricante] (
 	Id INT PRIMARY KEY IDENTITY(1,1),
@@ -25,7 +25,7 @@ CREATE TABLE [LOS_CUATRO_FANTASTICOS].[BI_Fabricante] (
 )
 GO
 
-RAISERROR ('1. - Creando [BI_Caja]', 0, 1) WITH NOWAIT
+RAISERROR ('1.4 - Creando [BI_Caja]', 0, 1) WITH NOWAIT
 GO
 CREATE TABLE [LOS_CUATRO_FANTASTICOS].[BI_Caja] (
 	Codigo DECIMAL(18,0) PRIMARY KEY,
@@ -34,7 +34,7 @@ CREATE TABLE [LOS_CUATRO_FANTASTICOS].[BI_Caja] (
 )
 GO
 
-RAISERROR ('1. - Creando [BI_Transmision]', 0, 1) WITH NOWAIT
+RAISERROR ('1.5 - Creando [BI_Transmision]', 0, 1) WITH NOWAIT
 GO
 CREATE TABLE [LOS_CUATRO_FANTASTICOS].[BI_Transmision] (
 	Codigo DECIMAL(18,0) PRIMARY KEY,
@@ -43,7 +43,7 @@ CREATE TABLE [LOS_CUATRO_FANTASTICOS].[BI_Transmision] (
 )
 GO
 
-RAISERROR ('1. - Creando [BI_Motor]', 0, 1) WITH NOWAIT
+RAISERROR ('1.6 - Creando [BI_Motor]', 0, 1) WITH NOWAIT
 GO
 CREATE TABLE [LOS_CUATRO_FANTASTICOS].[BI_Motor] (
 	Codigo DECIMAL(18,0) PRIMARY KEY,
@@ -51,7 +51,7 @@ CREATE TABLE [LOS_CUATRO_FANTASTICOS].[BI_Motor] (
 )
 GO
 
-RAISERROR ('1. - Creando [BI_Modelo]', 0, 1) WITH NOWAIT
+RAISERROR ('1.7 - Creando [BI_Modelo]', 0, 1) WITH NOWAIT
 GO
 -- Creación tabla Modelo
 CREATE TABLE [LOS_CUATRO_FANTASTICOS].[BI_Modelo] (
@@ -65,7 +65,7 @@ CREATE TABLE [LOS_CUATRO_FANTASTICOS].[BI_Modelo] (
 )
 GO
 
-RAISERROR ('1. - Creando Sucursal', 0, 1) WITH NOWAIT
+RAISERROR ('1.8 - Creando Sucursal', 0, 1) WITH NOWAIT
 GO
 CREATE TABLE [LOS_CUATRO_FANTASTICOS].BI_Sucursal (
 	Id INT IDENTITY PRIMARY KEY,
@@ -76,7 +76,7 @@ CREATE TABLE [LOS_CUATRO_FANTASTICOS].BI_Sucursal (
 )
 GO
 
-RAISERROR ('1. - Creando Cliente', 0, 1) WITH NOWAIT
+RAISERROR ('1.9 - Creando Cliente', 0, 1) WITH NOWAIT
 GO
 CREATE TABLE [LOS_CUATRO_FANTASTICOS].[BI_Cliente] (
 	Id INT PRIMARY KEY,
@@ -85,7 +85,7 @@ CREATE TABLE [LOS_CUATRO_FANTASTICOS].[BI_Cliente] (
 )
 GO
 
-RAISERROR ('1. - Creando Tipo Auto', 0, 1) WITH NOWAIT
+RAISERROR ('1.10 - Creando Tipo Auto', 0, 1) WITH NOWAIT
 GO
 CREATE TABLE [LOS_CUATRO_FANTASTICOS].[BI_TipoAuto] (
 	Codigo DECIMAL(18, 0) IDENTITY PRIMARY KEY,
@@ -94,7 +94,7 @@ CREATE TABLE [LOS_CUATRO_FANTASTICOS].[BI_TipoAuto] (
 GO
 
 
-RAISERROR ('1. - Creando [BI_Compra_Venta_Auto_Autoparte]', 0, 1) WITH NOWAIT
+RAISERROR ('1.11 - Creando [BI_Compra_Venta_Auto_Autoparte]', 0, 1) WITH NOWAIT
 GO
 CREATE TABLE [LOS_CUATRO_FANTASTICOS].[BI_Compra_Venta_Auto_Autoparte] (
 	Tipo_Compra_Venta CHAR(1) NOT NULL,
@@ -110,7 +110,7 @@ CREATE TABLE [LOS_CUATRO_FANTASTICOS].[BI_Compra_Venta_Auto_Autoparte] (
 
 GO
 
-RAISERROR ('1 - Creando de Constrains e Indices', 0, 1) WITH NOWAIT
+RAISERROR ('1.12 - Creando de Constrains e Indices', 0, 1) WITH NOWAIT
 GO
 
 --Creación clave forania de la tabla BI_Modelo con BI_Fabricante
@@ -137,7 +137,7 @@ ADD CONSTRAINT FK_MotorId FOREIGN KEY (MotorId)
 REFERENCES [LOS_CUATRO_FANTASTICOS].[BI_Motor] (Codigo)
 GO
 
-RAISERROR ('X - Fin Tablas', 0, 1) WITH NOWAIT
+RAISERROR ('1 - Fin Tablas', 0, 1) WITH NOWAIT
 GO
 
 
@@ -146,6 +146,8 @@ GO
 
 ---------------------------------------------------------
 
+RAISERROR ('2 - Insertando datos', 0, 1) WITH NOWAIT
+GO
 
 RAISERROR ('2.1 - Insertando [BI_Fabricante]', 0, 1) WITH NOWAIT
 GO
@@ -185,4 +187,14 @@ INSERT INTO [LOS_CUATRO_FANTASTICOS].[BI_Motor]([Codigo] ,[Descripcion])
 	FROM [LOS_CUATRO_FANTASTICOS].[Motor]
 	
 
+GO
+
+RAISERROR ('2 - Fin insertando datos', 0, 1) WITH NOWAIT
+GO
+
+---------------------------------------------------------
+
+---------------------------------------------------------
+
+RAISERROR ('3 - Creando Vistas', 0, 1) WITH NOWAIT
 GO
