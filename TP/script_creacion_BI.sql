@@ -65,9 +65,9 @@ CREATE TABLE [LOS_CUATRO_FANTASTICOS].[BI_Modelo] (
 )
 GO
 
-RAISERROR ('1.8 - Creando Sucursal', 0, 1) WITH NOWAIT
+RAISERROR ('1.8 - Creando [BI_Sucursal]', 0, 1) WITH NOWAIT
 GO
-CREATE TABLE [LOS_CUATRO_FANTASTICOS].BI_Sucursal (
+CREATE TABLE [LOS_CUATRO_FANTASTICOS].[BI_Sucursal] (
 	Id INT IDENTITY PRIMARY KEY,
 	Direccion NVARCHAR(255) NOT NULL,
 	Mail NVARCHAR(255) NOT NULL,
@@ -76,7 +76,7 @@ CREATE TABLE [LOS_CUATRO_FANTASTICOS].BI_Sucursal (
 )
 GO
 
-RAISERROR ('1.9 - Creando Cliente', 0, 1) WITH NOWAIT
+RAISERROR ('1.9 - Creando [BI_Cliente]', 0, 1) WITH NOWAIT
 GO
 CREATE TABLE [LOS_CUATRO_FANTASTICOS].[BI_Cliente] (
 	Id INT PRIMARY KEY,
@@ -156,7 +156,6 @@ INSERT INTO [LOS_CUATRO_FANTASTICOS].[BI_Fabricante] (Nombre)
 	SELECT 
 		[Nombre]
 	FROM [LOS_CUATRO_FANTASTICOS].[Fabricante]
-	
 GO
 
 RAISERROR ('2.2 - Insertando [BI_Transmision]', 0, 1) WITH NOWAIT
@@ -165,8 +164,6 @@ GO
 INSERT INTO [LOS_CUATRO_FANTASTICOS].[BI_Transmision]([Codigo] ,[Descripcion])
 	SELECT[Codigo],[Descripcion]
 	FROM [LOS_CUATRO_FANTASTICOS].[Transmision]
-	
-
 GO
 
 RAISERROR ('2.3 - Insertando [BI_Caja]', 0, 1) WITH NOWAIT
@@ -175,8 +172,6 @@ GO
 INSERT INTO [LOS_CUATRO_FANTASTICOS].[BI_Caja]([Codigo] ,[Descripcion])
 	SELECT [Codigo],[Descripcion], NULL
 	FROM [LOS_CUATRO_FANTASTICOS].[Caja]
-	
-
 GO
 
 RAISERROR ('2.4 - Insertando [BI_Motor]', 0, 1) WITH NOWAIT
@@ -185,12 +180,40 @@ GO
 INSERT INTO [LOS_CUATRO_FANTASTICOS].[BI_Motor]([Codigo] ,[Descripcion])
 	SELECT [Codigo],[Descripcion]
 	FROM [LOS_CUATRO_FANTASTICOS].[Motor]
-	
+GO
 
+RAISERROR ('2.4 - Insertando [BI_Sucursal]', 0, 1) WITH NOWAIT
+GO
+---Inserto datos de Sucursal
+INSERT INTO [LOS_CUATRO_FANTASTICOS].[BI_Sucursal](Direccion, Mail, Telefono, Ciudad)
+	SELECT [Direccion], [Mail], [Telefono], [Ciudad]
+	FROM [LOS_CUATRO_FANTASTICOS].[Sucursal]
+GO
+
+RAISERROR ('2.4 - Insertando [BI_Cliente]', 0, 1) WITH NOWAIT
+GO
+---Inserto datos de Cliente
+INSERT INTO [LOS_CUATRO_FANTASTICOS].[BI_Cliente](Id, Sexo, Edad)
+	SELECT [Id], null, 
+	CASE 
+		WHEN DATEDIFF(YEAR, [Fecha_Nacimiento], GETDATE()) <= 30 THEN '18 - 30 años'
+		WHEN DATEDIFF(YEAR, [Fecha_Nacimiento], GETDATE()) > 50 THEN '> 50 años'
+		ELSE '31 - 50 años'
+	END
+	FROM [LOS_CUATRO_FANTASTICOS].[Cliente] as a
+GO
+
+RAISERROR ('2.4 - Insertando [BI_TipoAuto]', 0, 1) WITH NOWAIT
+GO
+---Inserto datos de TipoAuto
+INSERT INTO [LOS_CUATRO_FANTASTICOS].[BI_TipoAuto](Codigo, Descripcion)
+	SELECT [Codigo], [Descripcion]
+	FROM [LOS_CUATRO_FANTASTICOS].[TipoAuto]
 GO
 
 RAISERROR ('2 - Fin insertando datos', 0, 1) WITH NOWAIT
 GO
+
 
 ---------------------------------------------------------
 
