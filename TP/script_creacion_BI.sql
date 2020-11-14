@@ -55,11 +55,11 @@ RAISERROR ('1.7 - Creando [BI_Modelo]', 0, 1) WITH NOWAIT
 GO
 -- Creación tabla Modelo
 CREATE TABLE [LOS_CUATRO_FANTASTICOS].[BI_Modelo] (
-	Codigo INT PRIMARY KEY IDENTITY(1,1),
+	Codigo DECIMAL(18,0) PRIMARY KEY IDENTITY(1,1),
 	Nombre NVARCHAR(50) NULL,
 	Potencia NVARCHAR(50) NULL,
 	FabricanteId INT NOT NULL,
-	CanjeId DECIMAL(18,0) NULL,
+	CajaId DECIMAL(18,0) NULL,
 	TransmisionId DECIMAL(18,0) NULL,
 	MotorId DECIMAL(18,0) NULL
 )
@@ -121,7 +121,7 @@ GO
 
 --Creación clave forania de la tabla BI_Modelo con BI_Caja
 ALTER TABLE [LOS_CUATRO_FANTASTICOS].[BI_Modelo]  
-ADD CONSTRAINT FK_CanjeId FOREIGN KEY (CanjeId)
+ADD CONSTRAINT FK_CajaId FOREIGN KEY (CajaId)
 REFERENCES [LOS_CUATRO_FANTASTICOS].[BI_Caja] (Codigo)
 GO
 
@@ -210,6 +210,37 @@ INSERT INTO [LOS_CUATRO_FANTASTICOS].[BI_TipoAuto](Codigo, Descripcion)
 	SELECT [Codigo], [Descripcion]
 	FROM [LOS_CUATRO_FANTASTICOS].[TipoAuto]
 GO
+
+RAISERROR ('2.5 - Insertando BI_CategoriaAutoParte', 0, 1) WITH NOWAIT
+GO
+---Inserto datos de BI_CategoriaAutoParte
+INSERT INTO [LOS_CUATRO_FANTASTICOS].[BI_CategoriaAutoParte]([Codigo] ,[Descripcion])
+SELECT DISTINCT [Codigo],[Descripcion]
+  FROM [LOS_CUATRO_FANTASTICOS].[CategoriaAutoparte]
+
+GO
+
+RAISERROR ('2.6 - Insertando BI_Modelo', 0, 1) WITH NOWAIT
+GO
+---Inserto datos de BI_Modelo
+INSERT INTO [LOS_CUATRO_FANTASTICOS].[BI_Modelo](
+      [Nombre]
+      ,[Potencia]
+      ,[FabricanteId]
+      ,[CajaId]
+      ,[MotorId]
+      ,[TransmisionId])
+SELECT DISTINCT 
+      [Nombre]
+      ,[Potencia]
+      ,[FabricanteId]
+      ,[TipoCajaId]
+      ,[TipoMotorId]
+      ,[TipoTransmisionId]
+  FROM [LOS_CUATRO_FANTASTICOS].[Modelo]
+
+GO
+
 
 RAISERROR ('2 - Fin insertando datos', 0, 1) WITH NOWAIT
 GO
