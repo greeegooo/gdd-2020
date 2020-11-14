@@ -57,6 +57,23 @@ CREATE TABLE [LOS_CUATRO_FANTASTICOS].[BI_Motor] (
 )
 GO
 
+RAISERROR ('1. - Creando [BI_Compra_Venta_Auto_Autoparte]', 0, 1) WITH NOWAIT
+GO
+-- Creación tabla BI_Compra_Venta_Auto_Autoparte
+CREATE TABLE [LOS_CUATRO_FANTASTICOS].[BI_Compra_Venta_Auto_Autoparte] (
+	Tipo_Compra_Venta CHAR(1) NOT NULL,
+	Tipo_Auto_Autoparte NVARCHAR(10) NOT NULL,
+	Precio DECIMAL(18,2) NOT NULL,
+	IdCliente INT REFERENCES [LOS_CUATRO_FANTASTICOS].[BI_Cliente],
+	IdSucursal INT REFERENCES [LOS_CUATRO_FANTASTICOS].[BI_Sucursal],
+	IdTiempo INT REFERENCES [LOS_CUATRO_FANTASTICOS].[BI_Tiempo],
+	IdModelo INT REFERENCES [LOS_CUATRO_FANTASTICOS].[BI_Modelo],
+	IdTipoAuto INT NULL REFERENCES [LOS_CUATRO_FANTASTICOS].[BI_TipoAuto],
+	IdCategoria INT NULL REFERENCES [LOS_CUATRO_FANTASTICOS].[BI_CategoriaAutoparte]
+)
+
+GO
+
 RAISERROR ('X - Fin Tablas', 0, 1) WITH NOWAIT
 GO
 
