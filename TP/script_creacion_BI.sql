@@ -414,15 +414,104 @@ CREATE VIEW view_precio_promedio_autoparte_vendidos_comprados AS (
 )
 GO
 
+CREATE VIEW view_auto_ganancias_sucursal_mes AS
+	WITH compra_venta_precio AS(
+		SELECT 
+			sucursal.Id AS [Sucursal_ID],
+			tiempo.Mes AS [Mes],
+			compraVenta.Tipo_Compra_Venta AS [Tipo],
+			compraVenta.IdModelo AS [Modelo],
+			CASE
+				WHEN compraVenta.Tipo_Compra_Venta = 'c' THEN (-1) * SUM(compraVenta.Precio)
+				ELSE SUM(compraVenta.Precio)
+			END AS [Precio]		
+		FROM [LOS_CUATRO_FANTASTICOS].[BI_Compra_Venta_Auto_Autoparte] as compraVenta
+			INNER JOIN [LOS_CUATRO_FANTASTICOS].[BI_Tiempo] AS tiempo ON (tiempo.Id = compraVenta.IdTiempo)
+			INNER JOIN [LOS_CUATRO_FANTASTICOS].[BI_Sucursal] AS sucursal ON (sucursal.Id = compraVenta.IdSucursal)
+		WHERE compraVenta.Tipo_Auto_Autoparte = 'AUTO'
+		GROUP BY sucursal.Id, tiempo.Mes, compraVenta.IdModelo, compraVenta.Tipo_Compra_Venta
+	) 
+(
+	SELECT 
+		q1.Sucursal_ID,
+		q1.Mes,
+		CASE
+			WHEN SUM(q2.Precio + q1.Precio) IS NULL THEN SUM(isnull(q2.Precio, 0) + isnull(q1.Precio, 0))
+			ELSE SUM(q2.Precio + q1.Precio)
+		END AS Ganancia_Perdida
+	FROM compra_venta_precio q1
+		FULL OUTER JOIN compra_venta_precio q2 on (
+			q1.Sucursal_ID = q2.Sucursal_ID 
+			AND q1.Mes = q2.Mes 
+			AND q1.Modelo = q2.Modelo
+			AND q1.Tipo = 'c' AND q2.Tipo = 'v'
+		)
+	GROUP BY q1.Sucursal_ID, q1.Mes
+	HAVING q1.Sucursal_ID IS NOT NULL
+)
+GO
+
+CREATE VIEW view_autoparte_ganancias_sucursal_mes AS
+	WITH compra_venta_precio AS(
+		SELECT 
+			sucursal.Id AS [Sucursal_ID],
+			tiempo.Mes AS [Mes],
+			compraVenta.Tipo_Compra_Venta AS [Tipo],
+			compraVenta.IdModelo AS [Modelo],
+			CASE
+				WHEN compraVenta.Tipo_Compra_Venta = 'c' THEN (-1) * SUM(compraVenta.Precio)
+				ELSE SUM(compraVenta.Precio)
+			END AS [Precio]		
+		FROM [LOS_CUATRO_FANTASTICOS].[BI_Compra_Venta_Auto_Autoparte] as compraVenta
+			INNER JOIN [LOS_CUATRO_FANTASTICOS].[BI_Tiempo] AS tiempo ON (tiempo.Id = compraVenta.IdTiempo)
+			INNER JOIN [LOS_CUATRO_FANTASTICOS].[BI_Sucursal] AS sucursal ON (sucursal.Id = compraVenta.IdSucursal)
+		WHERE compraVenta.Tipo_Auto_Autoparte = 'AUTOPARTE'
+		GROUP BY sucursal.Id, tiempo.Mes, compraVenta.IdModelo, compraVenta.Tipo_Compra_Venta
+	) 
+(
+	SELECT 
+		q1.Sucursal_ID,
+		q1.Mes,
+		CASE
+			WHEN SUM(q2.Precio + q1.Precio) IS NULL THEN SUM(isnull(q2.Precio, 0) + isnull(q1.Precio, 0))
+			ELSE SUM(q2.Precio + q1.Precio)
+		END AS Ganancia_Perdida
+	FROM compra_venta_precio q1
+		FULL OUTER JOIN compra_venta_precio q2 on (
+			q1.Sucursal_ID = q2.Sucursal_ID 
+			AND q1.Mes = q2.Mes 
+			AND q1.Modelo = q2.Modelo
+			AND q1.Tipo = 'c' AND q2.Tipo = 'v'
+		)
+	GROUP BY q1.Sucursal_ID, q1.Mes
+	HAVING q1.Sucursal_ID IS NOT NULL
+)
+GO
+
+select * from view_autoparte_ganancias_sucursal_mes;
 -- Automóviles:
 --- Cantidad de automóviles, vendidos y comprados x sucursal y mes. (view_automoviles_vendidos_comprados_surcursal_mes)
 --- Precio promedio de automóviles, vendidos y comprados. (view_precio_promedio_automoviles_vendidos_comprados)
---- o Ganancias (precio de venta – precio de compra) x Sucursal x mes
---- o Promedio de tiempo en stock de cada modelo de automóvil.
+--- Ganancias (precio de venta – precio de compra) x Sucursal x mes. (view_ganancias_sucursal_mes)
+--- Promedio de tiempo en stock de cada modelo de automóvil.
 
 -- Autopartes
---- o Precio promedio de cada autoparte, vendida y comprada. (view_precio_promedio_autoparte_vendidos_comprados)
---- o Ganancias (precio de venta – precio de compra) x Sucursal x mes
---- o Promedio de tiempo en stock de cada autoparte.
---- o Máxima cantidad de stock por cada sucursal (anual) 
+--- Precio promedio de cada autoparte, vendida y comprada. (view_precio_promedio_autoparte_vendidos_comprados)
+--- Ganancias (precio de venta – precio de compra) x Sucursal x mes. (view_autoparte_ganancias_sucursal_mes)
+--- Promedio de tiempo en stock de cada autoparte.
+--- Máxima cantidad de stock por cada sucursal (anual) 
 
+
+
+
+
+-- Si hay columna compra_y_venta usar ese, sino compra_o_venta
+
+-- Mes 1  -22.359.513
+-- Mes 2  -20.604.194 + 18.544.272 = -2.059.921
+-- Mes 3  -36434665 + 12082820 = -24.351.845
+-- Mes 5  -17265794 
+-- Mes 7  +11929541
+-- Mes 10 +9750278
+-- Mes 11 -8756971
+-- Mes 12 +9099542
