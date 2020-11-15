@@ -488,7 +488,6 @@ CREATE VIEW view_autoparte_ganancias_sucursal_mes AS
 )
 GO
 
-select * from view_autoparte_ganancias_sucursal_mes;
 -- Automóviles:
 --- Cantidad de automóviles, vendidos y comprados x sucursal y mes. (view_automoviles_vendidos_comprados_surcursal_mes)
 --- Precio promedio de automóviles, vendidos y comprados. (view_precio_promedio_automoviles_vendidos_comprados)
@@ -499,7 +498,7 @@ select * from view_autoparte_ganancias_sucursal_mes;
 --- Precio promedio de cada autoparte, vendida y comprada. (view_precio_promedio_autoparte_vendidos_comprados)
 --- Ganancias (precio de venta – precio de compra) x Sucursal x mes. (view_autoparte_ganancias_sucursal_mes)
 --- Promedio de tiempo en stock de cada autoparte.
---- Máxima cantidad de stock por cada sucursal (anual) 
+--- Máxima cantidad de stock por cada sucursal (anual).
 
 
 
