@@ -493,29 +493,43 @@ CREATE VIEW view_autoparte_ganancias_sucursal_mes AS
 )
 GO
 
--- Automóviles:
---- Cantidad de automóviles, vendidos y comprados x sucursal y mes. (view_automoviles_vendidos_comprados_surcursal_mes)
---- Precio promedio de automóviles, vendidos y comprados. (view_precio_promedio_automoviles_vendidos_comprados)
---- Ganancias (precio de venta – precio de compra) x Sucursal x mes. (view_ganancias_sucursal_mes)
---- Promedio de tiempo en stock de cada modelo de automóvil.
 
--- Autopartes
---- Precio promedio de cada autoparte, vendida y comprada. (view_precio_promedio_autoparte_vendidos_comprados)
---- Ganancias (precio de venta – precio de compra) x Sucursal x mes. (view_autoparte_ganancias_sucursal_mes)
---- Promedio de tiempo en stock de cada autoparte.
---- Máxima cantidad de stock por cada sucursal (anual).
+CREATE VIEW view_maximaCantidadStockSucursalAnual_Autoparte AS(
+
+select max(tt.cantidad) as stock, tt.sucursal, tt.año
+from(
+select count(*) as cantidad, s.Id as sucursal, t.[Mes], t.[Año]
+from [LOS_CUATRO_FANTASTICOS].[BI_Compra_Venta_Auto_Autoparte] as cv
+inner join [LOS_CUATRO_FANTASTICOS].[BI_Sucursal] as s on cv.[IdSucursal] = s.Id
+inner join [LOS_CUATRO_FANTASTICOS].[BI_Tiempo] as t on cv.[IdTiempo] = t.Id
+where cv.[Tipo_Auto_Autoparte] = 'AUTOPARTE' and cv.[Tipo_Compra_Venta] = 'c'
+group by s.Id, t.[Mes], t.[Año]) as tt
+group by tt.sucursal, tt.año
+
+)
+GO
+
+
+CREATE VIEW view_Promedio_de_tiempo_en_stock_de_cada_modelo_de_ automóvil AS(
 
 
 
+select AVG(DATEDIFF(MONTH,compras.fecha,ventas.fechaVenta)) as [Promedio de tiempo en stock], compras.[Nombre] as modelo 
+ from(
+select datefromparts(t.[Año],t.[Mes], 1) as fecha, c.Patente, m.[Nombre]
+from [LOS_CUATRO_FANTASTICOS].[BI_Compra_Venta_Auto_Autoparte] as c
+inner join [LOS_CUATRO_FANTASTICOS].[BI_Modelo] as  m on c.[IdModelo] = m.[Codigo]
+inner join [LOS_CUATRO_FANTASTICOS].[BI_Tiempo] as t on c.[IdTiempo] = t.Id
+where c.[Tipo_Auto_Autoparte] = 'AUTO' and c.[Tipo_Compra_Venta] = 'c') as compras 
+inner join(
+select datefromparts(t.[Año],t.[Mes], 1) as fechaVenta, v.Patente, m.[Nombre]
+from [LOS_CUATRO_FANTASTICOS].[BI_Compra_Venta_Auto_Autoparte] as v 
+inner join [LOS_CUATRO_FANTASTICOS].[BI_Modelo] as  m on v.[IdModelo] = m.[Codigo]
+inner join [LOS_CUATRO_FANTASTICOS].[BI_Tiempo]  as t on v.[IdTiempo] = t.Id
+where v.[Tipo_Auto_Autoparte] = 'AUTO' and v.[Tipo_Compra_Venta] = 'v'
+) as ventas on compras.Patente = ventas.Patente
+group by compras.Nombre
 
+)
+GO
 
--- Si hay columna compra_y_venta usar ese, sino compra_o_venta
-
--- Mes 1  -22.359.513
--- Mes 2  -20.604.194 + 18.544.272 = -2.059.921
--- Mes 3  -36434665 + 12082820 = -24.351.845
--- Mes 5  -17265794 
--- Mes 7  +11929541
--- Mes 10 +9750278
--- Mes 11 -8756971
--- Mes 12 +9099542
