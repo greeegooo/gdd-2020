@@ -100,6 +100,7 @@ CREATE TABLE [LOS_CUATRO_FANTASTICOS].[BI_Compra_Venta_Auto_Autoparte] (
 	Tipo_Auto_Autoparte NVARCHAR(10) NOT NULL,
 	Precio DECIMAL(18,2) NOT NULL,
 	Cantidad DECIMAL(18,2) NULL,
+	Patente nvarchar(50) NULL,
 	IdCliente INT REFERENCES [LOS_CUATRO_FANTASTICOS].[BI_Cliente],
 	IdSucursal INT REFERENCES [LOS_CUATRO_FANTASTICOS].[BI_Sucursal],
 	IdTiempo INT REFERENCES [LOS_CUATRO_FANTASTICOS].[BI_Tiempo],
@@ -263,7 +264,7 @@ RAISERROR ('2.11 - Insertando BI_Compra_Venta_Auto_Autoparte', 0, 1) WITH NOWAIT
 GO
 -- COMPRA AUTO
 INSERT INTO [LOS_CUATRO_FANTASTICOS].[BI_Compra_Venta_Auto_Autoparte] 
-([IdCliente], [IdSucursal], [IdTiempo], [IdModelo], [IdTipoAuto], [IdCategoria], [Tipo_Compra_Venta], [Tipo_Auto_Autoparte], [Precio], [Cantidad])
+([IdCliente], [IdSucursal], [IdTiempo], [IdModelo], [IdTipoAuto], [IdCategoria], [Tipo_Compra_Venta], [Tipo_Auto_Autoparte], [Precio], [Cantidad], [Patente])
 SELECT 
 	[IdCliente] = bicliente.Id, 
 	[IdSucursal] = compra.SucursalId, 
@@ -278,7 +279,8 @@ SELECT
 	[Tipo_Compra_Venta] = 'C', 
 	[Tipo_Auto_Autoparte] = 'AUTO', 
 	[Precio] = compraauto.Precio,
-	[Cantidad] = null
+	[Cantidad] = null,
+	[Patente] = autoo.[Patente]
 FROM [LOS_CUATRO_FANTASTICOS].[Compra] as compra
 INNER JOIN [LOS_CUATRO_FANTASTICOS].[CompraAuto] as compraauto on compra.Numero = compraauto.CompraNumero
 INNER JOIN [LOS_CUATRO_FANTASTICOS].[Auto] as autoo on compraauto.AutoId = autoo.Id
@@ -289,7 +291,7 @@ GO
 
 -- COMPRA AUTOPARTE
 INSERT INTO [LOS_CUATRO_FANTASTICOS].[BI_Compra_Venta_Auto_Autoparte] 
-([IdCliente], [IdSucursal], [IdTiempo], [IdModelo], [IdTipoAuto], [IdCategoria], [Tipo_Compra_Venta], [Tipo_Auto_Autoparte], [Precio], [Cantidad])
+([IdCliente], [IdSucursal], [IdTiempo], [IdModelo], [IdTipoAuto], [IdCategoria], [Tipo_Compra_Venta], [Tipo_Auto_Autoparte], [Precio], [Cantidad],[Patente])
 SELECT 
 	[IdCliente] = bicliente.Id, 
 	[IdSucursal] = compra.SucursalId, 
@@ -304,7 +306,8 @@ SELECT
 	[Tipo_Compra_Venta] = 'C', 
 	[Tipo_Auto_Autoparte] = 'AUTOPARTE', 
 	[Precio] = compraautoparte.Precio,
-	[Cantidad] = compraautoparte.Cantidad
+	[Cantidad] = compraautoparte.Cantidad,
+	[Patente] = null
 FROM [LOS_CUATRO_FANTASTICOS].[Compra] as compra
 INNER JOIN [LOS_CUATRO_FANTASTICOS].[CompraAutoparte] as compraautoparte on compra.Numero = compraautoparte.CompraNumero
 INNER JOIN [LOS_CUATRO_FANTASTICOS].[Autoparte] as autoparte on compraautoparte.AutoparteId = autoparte.Codigo
@@ -315,7 +318,7 @@ GO
 
 -- VENTA AUTO
 INSERT INTO [LOS_CUATRO_FANTASTICOS].[BI_Compra_Venta_Auto_Autoparte] 
-([IdCliente], [IdSucursal], [IdTiempo], [IdModelo], [IdTipoAuto], [IdCategoria], [Tipo_Compra_Venta], [Tipo_Auto_Autoparte], [Precio], [Cantidad])
+([IdCliente], [IdSucursal], [IdTiempo], [IdModelo], [IdTipoAuto], [IdCategoria], [Tipo_Compra_Venta], [Tipo_Auto_Autoparte], [Precio], [Cantidad], [Patente])
 SELECT 
 	[IdCliente] = bicliente.Id, 
 	[IdSucursal] = factura.SucursalId, 
@@ -330,7 +333,8 @@ SELECT
 	[Tipo_Compra_Venta] = 'V', 
 	[Tipo_Auto_Autoparte] = 'AUTO', 
 	[Precio] = facturaauto.Precio,
-	[Cantidad] = null
+	[Cantidad] = null,
+	[Patente] = autoo.[Patente]
 FROM [LOS_CUATRO_FANTASTICOS].[Factura] as factura
 INNER JOIN [LOS_CUATRO_FANTASTICOS].[FacturaAuto] as facturaauto on factura.Numero = facturaauto.FacturaNumero
 INNER JOIN [LOS_CUATRO_FANTASTICOS].[Auto] as autoo on facturaauto.AutoId = autoo.Id
@@ -341,7 +345,7 @@ GO
 
 -- VENTA AUTOPARTE
 INSERT INTO [LOS_CUATRO_FANTASTICOS].[BI_Compra_Venta_Auto_Autoparte] 
-([IdCliente], [IdSucursal], [IdTiempo], [IdModelo], [IdTipoAuto], [IdCategoria], [Tipo_Compra_Venta], [Tipo_Auto_Autoparte], [Precio], [Cantidad])
+([IdCliente], [IdSucursal], [IdTiempo], [IdModelo], [IdTipoAuto], [IdCategoria], [Tipo_Compra_Venta], [Tipo_Auto_Autoparte], [Precio], [Cantidad],[Patente])
 SELECT 
 	[IdCliente] = bicliente.Id, 
 	[IdSucursal] = factura.SucursalId, 
@@ -356,7 +360,8 @@ SELECT
 	[Tipo_Compra_Venta] = 'V', 
 	[Tipo_Auto_Autoparte] = 'AUTOPARTE', 
 	[Precio] = facturaautoparte.Precio,
-	[Cantidad] = facturaautoparte.Cantidad
+	[Cantidad] = facturaautoparte.Cantidad,
+	[Patente] = NULL
 FROM [LOS_CUATRO_FANTASTICOS].[Factura] as factura
 INNER JOIN [LOS_CUATRO_FANTASTICOS].[FacturaAutoparte] as facturaautoparte on factura.Numero = facturaautoparte.FacturaNumero
 INNER JOIN [LOS_CUATRO_FANTASTICOS].[Autoparte] as autoparte on facturaautoparte.AutoparteId = autoparte.Codigo
