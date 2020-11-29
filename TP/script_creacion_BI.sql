@@ -510,10 +510,7 @@ group by tt.sucursal, tt.año
 GO
 
 
-CREATE VIEW view_Promedio_de_tiempo_en_stock_de_cada_modelo_de_ automóvil AS(
-
-
-
+CREATE VIEW view_Promedio_de_tiempo_en_stock_de_cada_modelo_de_automóvil AS(
 select AVG(DATEDIFF(MONTH,compras.fecha,ventas.fechaVenta)) as [Promedio de tiempo en stock], compras.[Nombre] as modelo 
  from(
 select datefromparts(t.[Año],t.[Mes], 1) as fecha, c.Patente, m.[Nombre]
@@ -531,5 +528,8 @@ where v.[Tipo_Auto_Autoparte] = 'AUTO' and v.[Tipo_Compra_Venta] = 'v'
 group by compras.Nombre
 
 )
+GO
+
+RAISERROR ('3 - Fin Creando Vistas', 0, 1) WITH NOWAIT
 GO
 
